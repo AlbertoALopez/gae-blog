@@ -1,7 +1,20 @@
 {% extends "base.html" %}
-{% blockcontent %}
+{% block content %}
 <div class="col-sm-8 blog-main">
-    Meow
+    <div class="form-container">
+        {{error_message | safe}}
+        <form method="post">
+            <div class="form-group">
+                <label for="post-title">Post title</label>
+                <input type="text" class="form-control" id="post-title"
+                    placeholder="Post title" name="post-title" value="{{post_title}}">
+            </div>
+            <div class="form-group">
+                <label for="post-body">Write your post here</label>
+                <textarea class="form-control" rows="3" name="post-body">{{post_body}}</textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Submit post</button>
+        </form>
+    </div>
 </div>
-
 {% endblock %}

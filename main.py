@@ -1,5 +1,4 @@
 """Simple routing and rendering example using GAE with jinja2 templates."""
-
 import os
 import webapp2
 import jinja2
@@ -53,15 +52,38 @@ class MainPage(Handler):
 
 class NewPost(Handler):
     """Handler for new blog post page"""
+    # TODO: Add conditional error string
 
-    def render_page(self):
-        self.render("newpost.html")
+    def render_page(self, post_title="",
+                    post_body="",
+                    error_message=""):
+        self.render("newpost.html",
+                    post_title=post_title,
+                    post_body=post_body,
+                    error_message=error_message)
 
     def get(self):
         self.render_page()
 
     def post(self):
-        self.render_page()
+        post_title = self.request.get("post-title")
+        post_body = self.request.get("post-body")
+
+        if post_title and post_body:
+            post = Posts(post_title=post_title, post_body=post_body)
+            post.put()
+
+            self.redirect("/")
+
+        else:
+            # Bootstrap alert error
+            error_message = """<div class="alert alert-danger" role="alert" class="error-message">Please enter a post title and a post body.</div>"""
+            self.render_page(error_message=error_message,
+                             post_title=post_title, post_body=post_body)
+
+    # def newline(self):
+    # def validate_title:
+    # def validate_body:
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainPage),
