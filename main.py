@@ -6,14 +6,13 @@ from google.appengine.ext import ndb
 
 # TODO: Create posts, display all posts, edit posts, delete posts, user control
 
-
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
                                autoescape=True)
 
 
 class Handler(webapp2.RequestHandler):
-    """Base handler."""
+    """Main handler."""
 
     def write(self, *a, **kw):
         """Writes given arguments to page"""
@@ -28,18 +27,23 @@ class Handler(webapp2.RequestHandler):
         """Renders template"""
         self.write(self.render_str(template, **kw))
 
+# blog
+
+
+def blog_key(name="default"):
+    return ndb.Key('blogs', name)
 
 class Posts(ndb.Model):
     post_title = ndb.StringProperty(required=True)
-    post_submitter = ndb.StringProperty()
-    post_id = ndb.IntegerProperty()
-    post_created = ndb.DateTimeProperty(auto_now_add=True)
     post_body = ndb.TextProperty(required=True)
+    post_submitter = ndb.StringProperty()
+    post_created = ndb.DateTimeProperty(auto_now_add=True)
+    last_edited = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
     def return_posts_desc(self):
         """Returns a list of descending posts."""
-        posts = ndb.gql("SELECT * FROM Posts ORDER BY post_created DESC")
+        posts = ndb.gql("SELECT * FROM Posts ORDER BY post_created DESC LIMIT 10")
         return posts
 
 
@@ -49,10 +53,20 @@ class MainPage(Handler):
         posts = Posts.return_posts_desc()
         self.render("blog.html", posts=posts)
 
+class PostPage(Handler):
+    """Looks up individual posts"""
+    def get(self, post_id):
+        key = ndb.Key('Posts', int(post_id), parent=blog_key())
+        post = key.get()
+        
+        if not post:
+            self.error(404)
+            return
+
+        self.render("permalink.html", post=post)
 
 class NewPost(Handler):
     """Handler for new blog post page"""
-    # TODO: Add conditional error string
 
     def render_page(self, post_title="",
                     post_body="",
@@ -70,10 +84,12 @@ class NewPost(Handler):
         post_body = self.request.get("post-body")
 
         if post_title and post_body:
-            post = Posts(post_title=post_title, post_body=post_body)
+            post = Posts(parent=blog_key(),
+                         post_title=post_title,
+                         post_body=post_body)
             post.put()
 
-            self.redirect("/")
+            self.redirect("/blog/%s" % str(post.key.id()))
 
         else:
             # Bootstrap alert error
@@ -86,5 +102,6 @@ class NewPost(Handler):
     # def validate_body:
 
 app = webapp2.WSGIApplication([
-    webapp2.Route('/', MainPage),
-    webapp2.Route('/newpost', NewPost)], debug=True)
+    ('/blog', MainPage),
+    ('/blog/newpost', NewPost),
+    ('/blog/([0-9]+)', PostPage)], debug=True)

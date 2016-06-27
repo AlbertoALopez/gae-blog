@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="col-sm-8 blog-main">
+    <div class="blog-post">
+        <h2 class="blog-post-title">{{post.post_title}}</h2>
+        <p class="blog-post-meta">{{post.post_created}} by<a href="#"> {{post.post_submitter}}</a> ID: {{post.key.id()}}</p>
+        <p>{{post.post_body | safe}}</p>
+    </div>
+</div>
+{% endblock %}
