@@ -2,12 +2,13 @@
 import os
 import webapp2
 import jinja2
+import bleach
 from google.appengine.ext import ndb
 
 # TODO: Create posts, display all posts, edit posts, delete posts, user control
 
-template_dir = os.path.join(os.path.dirname(__file__), 'templates')
-jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
+TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
+JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR),
                                autoescape=True)
 
 
@@ -20,7 +21,7 @@ class Handler(webapp2.RequestHandler):
 
     def render_str(self, template, **params):
         """Matches given string to jinja2 template"""
-        t = jinja_env.get_template(template)
+        t = JINJA_ENV.get_template(template)
         return t.render(params)
 
     def render(self, template, **kw):
@@ -58,7 +59,7 @@ class PostPage(Handler):
     def get(self, post_id):
         key = ndb.Key('Posts', int(post_id), parent=blog_key())
         post = key.get()
-        
+
         if not post:
             self.error(404)
             return
@@ -80,8 +81,8 @@ class NewPost(Handler):
         self.render_page()
 
     def post(self):
-        post_title = self.request.get("post-title")
-        post_body = self.request.get("post-body")
+        post_title = bleach.clean(self.request.get("post-title"), strip=True)
+        post_body = bleach.clean(self.request.get("post-body"), strip=True)
 
         if post_title and post_body:
             post = Posts(parent=blog_key(),
