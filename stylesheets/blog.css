@@ -149,6 +149,14 @@ h6, .h6 {
   color: #999;
 }
 
+/* Error messages and form validation */
+
+.label {
+    text-align: right
+}
+.error {
+    color: red
+}
 
 /*
  * Footer
