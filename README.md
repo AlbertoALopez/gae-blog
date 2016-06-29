@@ -1,3 +1,3 @@
-#gaeblog
+#Multi user blog
 
-Testing google app engine.
+A multi user blog with user control and implemented on Google App Engine.
