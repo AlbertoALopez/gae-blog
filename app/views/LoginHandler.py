@@ -3,7 +3,10 @@ from BaseHandler import Handler
 from formverification import *
 from models import User
 
+
 class LoginHandler(Handler):
+    """Handler for login page."""
+
     def form_verified(self):
         if User.user_login(self.user_name, self.user_password):
             user = User.get_user_by_name(self.user_name)
@@ -25,7 +28,7 @@ class LoginHandler(Handler):
         password_error = "" if valid_password(self.user_password) else "Please enter a valid password."
 
         if username_error == "" and password_error == "":
-            # Call method done() and redirect to welcome
+            # Form is verified and redirect to welcome
             self.form_verified()
         else:
             self.render('login.html',

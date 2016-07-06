@@ -11,10 +11,14 @@ class NewPost(Handler):
     def render_page(self, post_title="",
                     post_body="",
                     error_message=""):
+        user = None
+        if self.user:
+            user = self.user
         self.render("newpost.html",
                     post_title=post_title,
                     post_body=post_body,
-                    error_message=error_message)
+                    error_message=error_message,
+                    user=user)
 
     def get(self):
         self.render_page()

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% if user %}
 <div class="col-sm-8 blog-main">
     <div class="form-container">
         {{error_message | safe}}
@@ -17,4 +18,7 @@
         </form>
     </div>
 </div>
+{% else %}
+<p>Please log in before you post.</p>
+{% endif %}
 {% endblock %}

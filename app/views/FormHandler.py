@@ -1,4 +1,4 @@
-"""Creates a simple signup page with rudimentary validation and redirection."""
+"""Creates a signup page with rudimentary validation and redirection."""
 from BaseHandler import Handler
 from models import User
 from formverification import *
@@ -25,7 +25,7 @@ class FormHandler(Handler):
             self.redirect('/blog/welcome')
 
     def get(self):
-            self.render("signup.html")
+        self.render("signup.html")
 
     def post(self):
         """Validates user input and return errors if tests fail"""
