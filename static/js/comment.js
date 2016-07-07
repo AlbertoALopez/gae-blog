@@ -16,11 +16,13 @@ $(function() {
     });
 
     $("#submit-comment-btn").click(function() {
-        var commentValue = $("textarea").val();
-        var dataString = 'content=' + commentValue;
+        // Grab form values
+        var commentBody = $("textarea").val();
+        var parent = $("#parent").val();
+        var commentSubmitter = $("#comment-submitter").val();
 
         // Form is empty
-        if(commentValue ==='') {
+        if(commentBody === '') {
             // Add error class and messages
             $("#comment-body-error").show();
             $("#comment-form-textarea").addClass("has-error");
@@ -38,7 +40,18 @@ $(function() {
             $("#loading").fadeIn(400).html('<img src="/static/img/load.gif"' +
             'align="absmiddle"><span class="loading"> Loading Comment...</span>');
 
+            $.ajax({
+                type: "POST",
+                url: "/blog/newcomment",
+                data: {'parent': parent,
+                       'comment-submitter': commentSubmitter,
+                       'comment-body': commentBody},
+                cache: false,
+                success: function(response) {
+                    console.log(response);
+                }
+            });
         }
-        return false;
+        // return false;
     });
 });

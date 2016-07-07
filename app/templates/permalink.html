@@ -16,8 +16,8 @@
     <form id="comment-form" action="/blog/newcomment" method="post" role="form">
         <div class="form-group">
             <label for="Author">Posting as {{ user.name }}</label>
-            <input type="hidden" name="comment-submitter" value="{{ user.name }}">
-            <input type="hidden" name="comment-parent-id" value="{{ post.key.id() }}">
+            <input id="comment-submitter" type="hidden" name="comment-submitter" value="{{ user.name }}">
+            <input id="parent" type="hidden" name="parent" value="{{ post.key.id() }}">
         </div>
         <div id="comment-form-textarea" class="form-group">
             <label for="comment">Your Comment</label>
@@ -30,17 +30,19 @@
     <p>Please sign in to leave a comment.</p>
     {% endif %}
 </div>
-<div class="well">
+{% for comment in comments %}
+<div class="media">
     <div class="media">
         <a class="pull-left" href="#">
             <img class="media-object" src="http://placehold.it/64x64" alt="">
         </a>
         <div class="media-body">
-        <h4 class="media-heading">sdgdfgfdg <small> at 2016-06-02</small></h4>
-        <p>sdas</p>
+        <h4 class="media-heading">{{ comment.comment_submitter}} <small> at {{ comment.comment_created.strftime('%Y-%m-%d-%I:%M') }}</small></h4>
+        <p>{{ comment.comment_body | safe }}</p>
         </div>
     </div>
 </div>
+{% endfor %}
 <div id="loading"></div>
 {% endblock %}
 {% block javascript %}

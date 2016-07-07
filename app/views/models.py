@@ -77,5 +77,5 @@ class Comments(ndb.Model):
     @classmethod
     def return_comments(CLASS, parent_id):
         """Returns all comments in store that have the given parent."""
-        comments = Comments.query(Comments.parent == int(parent_id)).get()
+        comments = Comments.query(Comments.parent == int(parent_id)).fetch()
         return comments

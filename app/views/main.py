@@ -29,4 +29,4 @@ app = webapp2.WSGIApplication([
     ('/blog/welcome', WelcomeHandler),
     ('/blog/login', LoginHandler),
     ('/blog/logout', LogoutHandler),
-    ('blog/newcomment', NewComment)], debug=True)
+    ('/blog/newcomment', NewComment)], debug=True)
