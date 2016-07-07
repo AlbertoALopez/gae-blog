@@ -9,8 +9,8 @@
     <title>GAE blog</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="/static/stylesheets/blog.css">
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script>tinymce.init({ selector:'textarea' });</script>
+    {% block scripthead %}
+    {% endblock %}
 </head>
 <body>
     <div class="blog-masthead">
@@ -65,9 +65,9 @@
         <div class="sidebar-module sidebar-module-inset">
            <header><p class="text-center">Welcome {{ user.name}}!</p></header>
             <span><a class="btn btn-primary" href="/blog/newpost">Write New Post</a></span>
-            <span><a class="btn btn-primary" href="posts.php">View My Posts</a></span>
+            <span><a class="btn btn-primary" href="/blog/welcome">View My Posts</a></span>
             <br>
-            <span><a class="btn btn-success" href="profile.php">My Account</a></span>
+            <span><a class="btn btn-success" href="/blog/welcome">My Account</a></span>
             <br>
             <span><a class="btn btn-danger" id="logout" href="/blog/logout"> Log Out</a></span>
         </div>
@@ -105,5 +105,7 @@
     </div><!-- /.container -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    {% block javascript %}
+    {% endblock %}
 </body>
 </html>

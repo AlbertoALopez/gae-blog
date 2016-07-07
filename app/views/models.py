@@ -55,6 +55,7 @@ class Posts(ndb.Model):
     post_body = ndb.TextProperty(required=True)
     post_submitter = ndb.StringProperty()
     post_created = ndb.DateTimeProperty(auto_now_add=True)
+    post_category = ndb.StringProperty()
     last_edited = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod

@@ -2,6 +2,7 @@
 {% block content %}
 {% if user %}
 <form action="" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="post-submitter" value="{{user.name}}">
     {{error_message | safe}}
     <div class="form-group">
         <label for="title">Post Title</label>
@@ -10,8 +11,8 @@
     <div class="form-group">
         <label for="title">Post Category</label>
         <br>
-        <select name="post_category" id="">
-           <option value='1'>Bootstrap</option><option value='2'>JavaScript</option><option value='3'>Python</option><option value='18'>Meow</option><option value='21'>Hockey</option>
+        <select name="post-category" id="">
+           <option value='Bootstrap'>Bootstrap</option><option value='JavaScript'>JavaScript</option><option value='Python'>Python</option><option value='Meow'>Meow</option><option value='Hockey'>Hockey</option>
         </select>
     </div>
     <div class="form-group">

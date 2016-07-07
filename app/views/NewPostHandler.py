@@ -26,11 +26,15 @@ class NewPost(Handler):
     def post(self):
         post_title = bleach.clean(self.request.get("post-title"), strip=True)
         post_body = bleach.clean(self.request.get("post-body"), strip=True)
+        post_submitter = self.request.get("post-submitter")
+        post_category = self.request.get("post-category")
 
         if post_title and post_body:
             post = Posts(parent=blog_key(),
                          post_title=post_title,
-                         post_body=post_body)
+                         post_body=post_body,
+                         post_submitter=post_submitter,
+                         post_category=post_category)
             post.put()
 
             self.redirect("/blog/%s" % str(post.key.id()))

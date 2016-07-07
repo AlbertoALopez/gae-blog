@@ -5,8 +5,8 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /static/stylesheets
-  static_dir: static/stylesheets
+- url: /static
+  static_dir: static
 
 - url: /.*
   script: app.views.main.app

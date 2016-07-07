@@ -10,9 +10,12 @@ class GetPost(Handler):
     def get(self, post_id):
         key = ndb.Key('Posts', int(post_id), parent=blog_key())
         post = key.get()
+        user = None
 
+        if self.user:
+            user = self.user
         if not post:
             self.error(404)
             return
 
-        self.render("permalink.html", post=post)
+        self.render("permalink.html", post=post, user=user)
