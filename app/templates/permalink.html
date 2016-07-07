@@ -13,10 +13,11 @@
 <div class="well">
     {% if user %}
     <h4>Leave a Comment:</h4>
-    <form id="comment-form" action="" method="post" role="form">
+    <form id="comment-form" action="/blog/newcomment" method="post" role="form">
         <div class="form-group">
             <label for="Author">Posting as {{ user.name }}</label>
-            <input type="hidden" name="comment-submitter" class="form-control" value="{{ user.name }}">
+            <input type="hidden" name="comment-submitter" value="{{ user.name }}">
+            <input type="hidden" name="comment-parent-id" value="{{ post.key.id() }}">
         </div>
         <div id="comment-form-textarea" class="form-group">
             <label for="comment">Your Comment</label>
@@ -40,7 +41,7 @@
         </div>
     </div>
 </div>
-<div id="flash"></div>
+<div id="loading"></div>
 {% endblock %}
 {% block javascript %}
 <script src="/static/js/comment.js"></script>

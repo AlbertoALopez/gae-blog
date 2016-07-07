@@ -34,8 +34,8 @@ $(function() {
             $("#comment-form-textarea").removeClass("has-error");
 
             // Show loading animation
-            $("#flash").show();
-            $("#flash").fadeIn(400).html('<img src="/static/img/load.gif"' +
+            $("#loading").show();
+            $("#loading").fadeIn(400).html('<img src="/static/img/load.gif"' +
             'align="absmiddle"><span class="loading"> Loading Comment...</span>');
 
         }

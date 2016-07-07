@@ -22,18 +22,18 @@ class User(ndb.Model):
     email = ndb.StringProperty()
 
     @classmethod
-    def get_user_by_id(CLS, uid):
+    def get_user_by_id(CLASS, uid):
         """Retrieves user object by its id."""
         return User.get_by_id(uid, parent=users_key())
 
     @classmethod
-    def get_user_by_name(CLS, name):
+    def get_user_by_name(CLASS, name):
         """Retrieves user object by its name."""
         user = User.query(User.name == name).get()
         return user
 
     @classmethod
-    def register(CLS, name, password, email=None):
+    def register(CLASS, name, password, email=None):
         """Registers a new user."""
         hashed_pw = make_pw_hash(name, password)
         return User(parent=users_key(),
@@ -42,15 +42,16 @@ class User(ndb.Model):
                     email=email)
 
     @classmethod
-    def user_login(CLS, name, password):
+    def user_login(CLASS, name, password):
         """Verifies that a user can login."""
-        user = CLS.get_user_by_name(name)
+        user = CLASS.get_user_by_name(name)
         if user and valid_pw(name, password, user.hashed_pw):
             return user
 
 
 class Posts(ndb.Model):
     """NDB model for Posts entity."""
+
     post_title = ndb.StringProperty(required=True)
     post_body = ndb.TextProperty(required=True)
     post_submitter = ndb.StringProperty()
@@ -59,7 +60,22 @@ class Posts(ndb.Model):
     last_edited = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
-    def return_posts_desc(CLS):
+    def return_posts_desc(CLASS):
         """Returns a list of descending posts."""
         posts = ndb.gql("SELECT * FROM Posts ORDER BY post_created DESC LIMIT 10")
         return posts
+
+
+class Comments(ndb.Model):
+    """NDB model for Comment entity."""
+
+    comment_submitter = ndb.StringProperty(required=True)
+    comment_body = ndb.TextProperty(required=True)
+    comment_created = ndb.DateTimeProperty(auto_now_add=True)
+    parent = ndb.IntegerProperty()
+
+    @classmethod
+    def return_comments(CLASS, parent_id):
+        """Returns all comments in store that have the given parent."""
+        comments = Comments.query(Comments.parent == int(parent_id)).get()
+        return comments
