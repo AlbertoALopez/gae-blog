@@ -17,6 +17,8 @@ class LoginHandler(Handler):
             self.render("login.html", error_message=error_message)
 
     def get(self):
+        if self.user:
+            self.redirect('/blog/welcome')
         self.render('login.html')
 
     def post(self):
