@@ -5,4 +5,4 @@ from BaseHandler import Handler
 class LogoutHandler(Handler):
     def get(self):
         self.logout()
-        self.redirect('/signup')
+        self.redirect('/')

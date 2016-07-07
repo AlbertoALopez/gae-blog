@@ -3,12 +3,13 @@
 {% block content %}
     {% for post in posts %}
         <div class="blog-post">
-            <h2 class="blog-post-title">{{post.post_title}}</h2>
-            <p class="blog-post-meta">{{post.post_created}} by<a href="#"> {{post.post_submitter}}</a> ID: {{post.key.id()}}</p>
+            <h2 class="blog-post-title"><a href="/blog/{{post.key.id()}}">{{post.post_title}}</a></h2>
+            <p class="blog-post-meta">Published by {{post.post_submitter}} on <span class="glyphicon glyphicon-time"></span> {{ post.post_created.strftime('%Y-%m-%d-%I:%M') }}</p>
             <p>{{post.post_body | safe}}</p>
+            <br>
+            <p class="blog-post-meta">Last edited <span class="glyphicon glyphicon-time"></span> {{ post.last_edited.strftime('%Y-%m-%d-%I:%M') }}</p>
         </div>
     {% endfor %}
-
       <nav>
         <ul class="pager">
           <li><a href="#">Previous</a></li>

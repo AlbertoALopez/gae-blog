@@ -5,8 +5,9 @@ from BaseHandler import Handler
 class WelcomeHandler(Handler):
     """Verifies if there is a valid user signed in and redirects."""
     def get(self):
+        user = None
         if self.user:
-            # Render page with valid username
-            self.render('welcome.html', username=self.user.name)
+            user = self.user
+            self.render('welcome.html', user=user)
         else:
             self.redirect('/blog/signup')

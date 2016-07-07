@@ -15,10 +15,10 @@ class MainPage(Handler):
 
     def get(self):
         posts = Posts.return_posts_desc()
-        user_name = None
+        user = None
         if self.user:
-            user_name = self.user.name
-        self.render("blog.html", posts=posts, user_name=user_name)
+            user = self.user
+        self.render("blog.html", posts=posts, user=user)
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),

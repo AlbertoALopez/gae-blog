@@ -25,7 +25,10 @@ class FormHandler(Handler):
             self.redirect('/blog/welcome')
 
     def get(self):
-        self.render("signup.html")
+        user = None
+        if self.user:
+            user = self.user
+        self.render("signup.html", user=user)
 
     def post(self):
         """Validates user input and return errors if tests fail"""
