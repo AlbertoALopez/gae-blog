@@ -72,10 +72,12 @@ class Comments(ndb.Model):
     comment_submitter = ndb.StringProperty(required=True)
     comment_body = ndb.TextProperty(required=True)
     comment_created = ndb.DateTimeProperty(auto_now_add=True)
+    comment_likes = ndb.IntegerProperty()
     parent = ndb.IntegerProperty()
+    liked_by = ndb.IntegerProperty(repeated=True)
 
     @classmethod
     def return_comments(CLASS, parent_id):
         """Returns all comments in store that have the given parent."""
-        comments = Comments.query(Comments.parent == int(parent_id)).fetch()
+        comments = Comments.query(Comments.parent == int(parent_id)).order(Comments.comment_created).fetch()
         return comments

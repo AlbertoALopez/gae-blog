@@ -30,20 +30,25 @@
     <p>Please sign in to leave a comment.</p>
     {% endif %}
 </div>
+<div id="loading"></div>
 {% for comment in comments %}
 <div class="media">
-    <div class="media">
-        <a class="pull-left" href="#">
-            <img class="media-object" src="http://placehold.it/64x64" alt="">
-        </a>
-        <div class="media-body">
-        <h4 class="media-heading">{{ comment.comment_submitter}} <small> at {{ comment.comment_created.strftime('%Y-%m-%d-%I:%M') }}</small></h4>
-        <p>{{ comment.comment_body | safe }}</p>
-        </div>
+    <a class="pull-left" href="#">
+        <img class="media-object" src="http://placehold.it/64x64" alt="">
+    </a>
+    <div class="media-body">
+    <h4 class="media-heading">{{ comment.comment_submitter}} <small> at {{ comment.comment_created.strftime('%Y-%m-%d-%I:%M') }}</small></h4>
+    <p>{{ comment.comment_body | safe }}</p>
+    <div class="number-of-likes pull-right" id="likes">{{comment.comment_likes}}</div>    
     </div>
+    {% if user.name == comment.comment_submitter %}
+    <button type="button" class="btn btn-primary">Edit</button>
+    <button type="button" class="btn btn-danger">Delete</button>
+    {% elif user.name != comment.comment_submitter %}
+    <button data-value="{{ comment.key.id() }}" class="like-comment-btn btn btn-primary pull-right"><span class="glyphicon glyphicon-hand-up"></span> Like</button>
+    {% endif %}
 </div>
 {% endfor %}
-<div id="loading"></div>
 {% endblock %}
 {% block javascript %}
 <script src="/static/js/comment.js"></script>

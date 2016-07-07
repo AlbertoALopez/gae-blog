@@ -1,6 +1,6 @@
-/* Handles real time comment generation and post submission */
+/* Handles real time comment generation, post submission, post edits and likes */
 $(function() {
-    // Stop propagation and default behaviour on form submit
+    // Tinymce options
     tinymce.init({
         selector: "textarea",
         statusbar: false,
@@ -11,10 +11,11 @@ $(function() {
         }
     });
 
+    // Stop propagation and default behaviour on form submit
     $("#comment-form").submit(function(e) {
         return false;
     });
-
+    // AJAX form handler
     $("#submit-comment-btn").click(function() {
         // Grab form values
         var commentBody = $("textarea").val();
@@ -52,6 +53,12 @@ $(function() {
                 }
             });
         }
-        // return false;
+        return false;
+    }); // End AJAX
+
+    // Comment like handler
+    $(".like-comment-btn").click(function() {
+        var commentId = $(this).data('value');
+        $(this).addClass("disabled");
     });
 });
