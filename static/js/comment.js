@@ -32,6 +32,7 @@ $(function() {
 
         // Form is valid
         else {
+            //
             // Remove possible error messages
             $("#comment-body-error").hide();
             $("#comment-form-textarea").removeClass("has-error");
@@ -53,12 +54,45 @@ $(function() {
                 }
             });
         }
-        return false;
-    }); // End AJAX
 
-    // Comment like handler
-    $(".like-comment-btn").click(function() {
+        return false;
+    }); // End POST for comment
+
+    // Handler to update comment likes
+    $(".like-comment-btn").click(function(event) {
+        event.stopPropagation();
         var commentId = $(this).data('value');
-        $(this).addClass("disabled");
-    });
+        var likeAmount = $(this).data('likes');
+        var commentLiker = $(this).data('user');
+
+        // If there are no likes yet, set to 1
+        if (likeAmount === "None") {
+            likeAmount = 1 ;
+        }
+        else {
+            likeAmount++;
+        }
+
+        var commentHtml = likeAmount + " likes";
+        var prev = $(this).prev().find(".number-of-likes");
+
+        // Disable like button so user cannot like more than once
+        $(this).prop("disabled", true);
+
+        $.ajax({
+            type: "PUT",
+            url: "/blog/commentlike",
+            data: {
+                'comment-id': commentId,
+                'comment-liker': commentLiker
+            },
+            cache: false,
+            success: function(response) {
+                prev.text(commentHtml);
+                console.log(response);
+            }
+        });
+    }); // End PUT for comment likes
+
+    // Handler to update post likes
 });
