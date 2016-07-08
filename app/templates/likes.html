@@ -1,0 +1,24 @@
+{% macro likes %}
+<span class="number-of-likes pull-right" id="likes">
+        {% if comment.comment_likes >= 0 %}
+        {{ comment.comment_likes }}
+        {% else %}
+        0
+        {% endif %}
+        <span class="glyphicon glyphicon-heart"></span>
+</span>
+    </div>
+    {% if user.name == comment.comment_submitter %}
+    <button type="button" class="btn btn-primary">Edit</button>
+    <button type="button" class="btn btn-danger">Delete</button>
+    {% else %}
+        {% if user.key.id() not in comment.liked_by %}
+            <button data-likes="{{ comment.comment_likes }}"
+                data-value="{{ comment.key.id() }}"
+                data-user="{{ user.key.id() }}"
+                class="like-comment-btn btn btn-primary pull-right">
+                <span class="glyphicon glyphicon-hand-up"></span> Like
+            </button>
+        {% endif %}
+    {% endif %}
+{% endmacro %}

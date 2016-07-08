@@ -44,3 +44,35 @@ class NewPost(Handler):
             error_message = """<div class="alert alert-danger" role="alert" class="error-message">Please enter a post title and a post body.</div>"""
             self.render_page(error_message=error_message,
                              post_title=post_title, post_body=post_body)
+
+
+class PostLiked(Handler):
+    """Handler for post likes."""
+
+    def put(self):
+        """Handler for PUT requests."""
+        post_id = self.request.get("post-id")
+        post_liker = int(self.request.get("post-liker"))
+        post = Posts.return_post(post_id)
+
+        # If post exists, increment and return
+        if post:
+            if post.post_likes is None:
+                post.post_likes = 1
+
+            else:
+                post.post_likes = post.post_likes + 1
+                post.put()
+
+            # If user has already liked post do not add again to list
+            for post_liker in post.liked_by:
+                if post_liker == post_liker:
+                    post.put()
+                    return
+
+            post.liked_by.append(int(post_liker))
+            post.put()
+
+        # Else render HTTP error message
+        else:
+            self.error_handlers[404] = self.handle_error

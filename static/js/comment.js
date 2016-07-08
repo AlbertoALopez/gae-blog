@@ -73,7 +73,7 @@ $(function() {
             likeAmount++;
         }
 
-        var commentHtml = likeAmount + " likes";
+        var commentHtml = likeAmount + " <span class='glyphicon glyphicon-heart'></span>";
         var prev = $(this).prev().find(".number-of-likes");
 
         // Disable like button so user cannot like more than once
@@ -81,18 +81,51 @@ $(function() {
 
         $.ajax({
             type: "PUT",
-            url: "/blog/commentlike",
+            url: "/blog/commentliked",
             data: {
                 'comment-id': commentId,
                 'comment-liker': commentLiker
             },
             cache: false,
             success: function(response) {
-                prev.text(commentHtml);
-                console.log(response);
+                prev.html(commentHtml);
             }
         });
     }); // End PUT for comment likes
 
     // Handler to update post likes
+    $(".like-post-btn").click(function(event) {
+        event.stopPropagation();
+        var postId = $(this).data('value');
+        var likeAmount = $(this).data('likes');
+        var postLiker = $(this).data('user');
+
+        // If there are no likes yet, set to 1
+        if (likeAmount === "None") {
+            likeAmount = 1 ;
+        }
+        else {
+            likeAmount++;
+        }
+
+        var postHtml = likeAmount + " <span class='glyphicon glyphicon-heart'></span>";
+        var prev = $(this).prev().find(".number-of-likes");
+
+        // Disable like button so user cannot like more than once
+        $(this).prop("disabled", true);
+
+        $.ajax({
+            type: "PUT",
+            url: "/blog/postliked",
+            data: {
+                'post-id': postId,
+                'post-liker': postLiker
+            },
+            cache: false,
+            success: function(response) {
+                prev.html(postHtml);
+                console.log(response)
+            }
+        });
+    }); // End PUT for post likes
 });

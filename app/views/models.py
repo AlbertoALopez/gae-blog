@@ -67,6 +67,13 @@ class Posts(ndb.Model):
         posts = ndb.gql("SELECT * FROM Posts ORDER BY post_created DESC LIMIT 10")
         return posts
 
+    @classmethod
+    def return_post(CLASS, post_id):
+        """Return a post by the given id."""
+        key = ndb.Key('blogs', 'default', 'Posts', int(post_id))
+        post = key.get()
+        return post
+
 
 class Comments(ndb.Model):
     """NDB model for Comment entity."""

@@ -8,6 +8,29 @@
             <p>{{post.post_body | safe}}</p>
             <br>
             <p class="blog-post-meta">Last edited <span class="glyphicon glyphicon-time"></span> {{ post.last_edited.strftime('%Y-%m-%d-%I:%M') }}</p>
+            <div class="post-likes">
+                <span class="number-of-likes pull-right">
+                    {% if post.post_likes >= 0 %}
+                    {{ post.post_likes }}
+                    {% else %}
+                    0
+                    {% endif %}
+                    <span class="glyphicon glyphicon-heart"></span>
+                </span>
+                {% if user.name == post.post_submitter %}
+                <button type="button" class="btn btn-primary">Edit</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+                {% else %}
+                    {% if user.key.id() not in post.liked_by %}
+                        <button data-likes="{{ post.post_likes }}"
+                            data-value="{{ post.key.id() }}"
+                            data-user="{{ user.key.id() }}"
+                            class="like-post-btn btn btn-primary pull-right">
+                            <span class="glyphicon glyphicon-hand-up"></span> Like
+                        </button>
+                    {% endif %}
+                {% endif %}
+            </div>
         </div>
     {% endfor %}
       <nav>

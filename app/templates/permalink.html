@@ -9,26 +9,29 @@
     <p>{{post.post_body | safe}}</p>
     <br>
     <p class="blog-post-meta">Last edited <span class="glyphicon glyphicon-time"></span> {{ post.last_edited.strftime('%Y-%m-%d-%I:%M') }}</p>
-</div>
-<div class="well">
-    {% if user %}
-    <h4>Leave a Comment:</h4>
-    <form id="comment-form" action="/blog/newcomment" method="post" role="form">
-        <div class="form-group">
-            <label for="Author">Posting as {{ user.name }}</label>
-            <input id="comment-submitter" type="hidden" name="comment-submitter" value="{{ user.name }}">
-            <input id="parent" type="hidden" name="parent" value="{{ post.key.id() }}">
-        </div>
-        <div id="comment-form-textarea" class="form-group">
-            <label for="comment">Your Comment</label>
-            <textarea id="comment-body" name="comment-body" class="form-control" rows="3"></textarea>
-            <label id="comment-body-error" style="display:none;" class="control-label" for="comment">Please enter a comment body.</label>
-        </div>
-        <input id="submit-comment-btn" value="Submit" type="submit" name="create-comment" class="btn btn-primary"></input>
-    </form>
-    {% else %}
-    <p>Please sign in to leave a comment.</p>
-    {% endif %}
+    <div class="post-likes">
+        <span class="number-of-likes pull-right">
+            {% if post.post_likes >= 0 %}
+            {{ post.post_likes }}
+            {% else %}
+            0
+            {% endif %}
+            <span class="glyphicon glyphicon-heart"></span>
+        </span>
+        {% if user.name == post.post_submitter %}
+        <button type="button" class="btn btn-primary">Edit</button>
+        <button type="button" class="btn btn-danger">Delete</button>
+        {% else %}
+            {% if user.key.id() not in post.liked_by %}
+                <button data-likes="{{ post.post_likes }}"
+                    data-value="{{ post.key.id() }}"
+                    data-user="{{ user.key.id() }}"
+                    class="like-post-btn btn btn-primary pull-right">
+                    <span class="glyphicon glyphicon-hand-up"></span> Like
+                </button>
+            {% endif %}
+        {% endif %}
+    </div>
 </div>
 <div id="loading"></div>
 {% for comment in comments %}
@@ -41,17 +44,17 @@
     <p>{{ comment.comment_body | safe }}</p>
     <span class="number-of-likes pull-right" id="likes">
         {% if comment.comment_likes >= 0 %}
-        {{comment.comment_likes}}
+        {{ comment.comment_likes }}
         {% else %}
         0
         {% endif %}
-        likes
+        <span class="glyphicon glyphicon-heart"></span>
     </span>
     </div>
     {% if user.name == comment.comment_submitter %}
     <button type="button" class="btn btn-primary">Edit</button>
     <button type="button" class="btn btn-danger">Delete</button>
-    {% elif user.name != comment.comment_submitter %}
+    {% else %}
         {% if user.key.id() not in comment.liked_by %}
             <button data-likes="{{ comment.comment_likes }}"
                 data-value="{{ comment.key.id() }}"
@@ -63,6 +66,25 @@
     {% endif %}
 </div>
 {% endfor %}
+<div class="well comment-box">
+    {% if user %}
+    <h4>Leave a Comment:</h4>
+    <form id="comment-form" action="/blog/newcomment" method="post" role="form">
+        <div class="form-group">
+            <label for="Author">Posting as {{ user.name }}</label>
+            <input id="comment-submitter" type="hidden" name="comment-submitter" value="{{ user.name }}">
+            <input id="parent" type="hidden" name="parent" value="{{ post.key.id() }}">
+        </div>
+        <div id="comment-form-textarea" class="form-group">
+            <textarea id="comment-body" name="comment-body" class="form-control" rows="3"></textarea>
+            <label id="comment-body-error" style="display:none;" class="control-label" for="comment">Please enter a comment body.</label>
+        </div>
+        <input id="submit-comment-btn" value="Submit" type="submit" name="create-comment" class="btn btn-primary"></input>
+    </form>
+    {% else %}
+    <p>Please sign in to leave a comment.</p>
+    {% endif %}
+</div>
 {% endblock %}
 {% block javascript %}
 <script src="/static/js/comment.js"></script>

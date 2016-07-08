@@ -5,6 +5,7 @@
 body {
   font-family: Georgia, "Times New Roman", Times, serif;
   color: #555;
+  padding-bottom: 50px;
 }
 
 h1, .h1,
@@ -148,6 +149,36 @@ h6, .h6 {
   margin-bottom: 20px;
   color: #999;
 }
+
+/*
+ * Like areas on post and comments
+ */
+
+.post-likes {
+    border: 1px solid lightgrey;
+}
+
+ .blog-post .number-of-likes {
+    margin: 15px 0 0 20px;
+ }
+
+ .blog-post .like-post-btn {
+    display: inline-block;
+    margin-top: 10px;
+ }
+
+ .number-of-likes {
+    font-size: 14px;
+ }
+
+ .media {
+    padding: 5px;
+ }
+
+ .comment-box {
+    margin-top: 15px;
+ }
+
 
 /* Error messages and form validation */
 
