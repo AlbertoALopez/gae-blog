@@ -57,7 +57,8 @@ class Posts(ndb.Model):
     post_submitter = ndb.StringProperty()
     post_created = ndb.DateTimeProperty(auto_now_add=True)
     post_category = ndb.StringProperty()
-    post_likes = ndb.StringProperty()
+    post_likes = ndb.IntegerProperty()
+    liked_by = ndb.IntegerProperty(repeated=True)
     last_edited = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
