@@ -8,7 +8,7 @@ from FormHandler import FormHandler
 from LoginHandler import LoginHandler
 from WelcomeHandler import WelcomeHandler
 from LogoutHandler import LogoutHandler
-from CommentHandler import NewComment
+from CommentHandler import NewComment, CommentLiked
 
 
 class MainPage(Handler):
@@ -29,4 +29,5 @@ app = webapp2.WSGIApplication([
     ('/blog/welcome', WelcomeHandler),
     ('/blog/login', LoginHandler),
     ('/blog/logout', LogoutHandler),
-    ('/blog/newcomment', NewComment)], debug=True)
+    ('/blog/newcomment', NewComment),
+    ('/blog/commentlike', CommentLiked)], debug=True)

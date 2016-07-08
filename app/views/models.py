@@ -57,6 +57,7 @@ class Posts(ndb.Model):
     post_submitter = ndb.StringProperty()
     post_created = ndb.DateTimeProperty(auto_now_add=True)
     post_category = ndb.StringProperty()
+    post_likes = ndb.StringProperty()
     last_edited = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
@@ -81,3 +82,10 @@ class Comments(ndb.Model):
         """Returns all comments in store that have the given parent."""
         comments = Comments.query(Comments.parent == int(parent_id)).order(Comments.comment_created).fetch()
         return comments
+
+    @classmethod
+    def return_comment(CLASS, comment_id):
+        """Return comment with specific id."""
+        key = ndb.Key('Comments', int(comment_id))
+        comment = key.get()
+        return comment

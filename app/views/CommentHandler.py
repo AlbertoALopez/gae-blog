@@ -1,5 +1,6 @@
 """Handler for new comments."""
 from BaseHandler import Handler
+from google.appengine.ext import ndb
 from models import Comments
 import json
 
@@ -8,6 +9,7 @@ class NewComment(Handler):
     """Handler for new comment."""
 
     def post(self):
+        """Handle POST requests."""
         parent = self.request.get("parent")
         comment_submitter = self.request.get("comment-submitter")
         comment_body = self.request.get("comment-body")
@@ -28,3 +30,35 @@ class NewComment(Handler):
                 'penis': 'penis'
             }
             self.response.out.write(json.dumps(jsonObj))
+
+
+class CommentLiked(Handler):
+    """Handler for new comment likes."""
+
+    def put(self):
+        """Handler for PUT requests."""
+        comment_id = self.request.get("comment-id")
+        comment_liker = int(self.request.get("comment-liker"))
+        comment = Comments.return_comment(comment_id)
+
+        # If comment exists, increment and return
+        if comment:
+            if comment.comment_likes is None:
+                comment.comment_likes = 1
+
+            else:
+                comment.comment_likes = comment.comment_likes + 1
+                comment.put()
+
+            # If user has already liked comment do not add again to list
+            for comment_liker in comment.liked_by:
+                if comment_liker == comment_liker:
+                    comment.put()
+                    return
+
+            comment.liked_by.append(int(comment_liker))
+            comment.put()
+
+        # Else render HTTP error message
+        else:
+            self.error_handlers[404] = self.handle_error

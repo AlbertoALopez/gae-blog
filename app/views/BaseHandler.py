@@ -2,6 +2,7 @@
 import webapp2
 import os
 import jinja2
+import json
 from password import make_secure_val
 from password import check_secure_val
 from models import User
@@ -13,6 +14,7 @@ JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR),
 
 class Handler(webapp2.RequestHandler):
     """Provides convenience functions for rendering templates and strings."""
+
     def write(self, *a, **kw):
         """Writes to page."""
         self.response.out.write(*a, **kw)
@@ -40,12 +42,30 @@ class Handler(webapp2.RequestHandler):
         return cookie_val and check_secure_val(cookie_val)
 
     def login(self, user):
+        """Logs a user in and sets a secure cookie for future use."""
         self.set_secure_cookie('user_id', str(user.key.id()))
 
     def logout(self):
+        """Overwrites current cookie to be empty."""
         self.response.headers.add_header('Set-Cookie', 'user_id=; Path=/')
 
     def initialize(self, *a, **kw):
+        """Reads if there is any set cookies and sets them"""
+        """to a global user object."""
         webapp2.RequestHandler.initialize(self, *a, **kw)
         uid = self.read_secure_cookie('user_id')
         self.user = uid and User.get_user_by_id(int(uid))
+
+    def handle_error(request, response, exception):
+        """Error handler for HTTP errors."""
+        if request.path.startswith('/json'):
+            response.headers.add_header('Content-Type', 'application/json')
+            result = {
+                'status': 'error',
+                'status_code': exception.code,
+                'error_message': exception.explanation,
+              }
+            response.write(json.dumps(result))
+        else:
+            response.write(exception)
+            response.set_status(exception.code)
