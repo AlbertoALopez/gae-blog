@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block scripthead %}
-<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 {% endblock %}
 {% block content %}
 <div class="blog-post">
     <h2 class="blog-post-title">{{post.post_title}}</h2>
     <p class="blog-post-meta">Published by {{post.post_submitter}} on <span class="glyphicon glyphicon-time"></span> {{ post.post_created.strftime('%Y-%m-%d-%I:%M') }}</p>
-    <p>{{post.post_body | safe}}</p>
+    <div id="post-body">{{post.post_body | safe}}</div>
     <br>
     <p class="blog-post-meta">Last edited <span class="glyphicon glyphicon-time"></span> {{ post.last_edited.strftime('%Y-%m-%d-%I:%M') }}</p>
     <div class="post-likes">
@@ -18,12 +18,12 @@
             {% endif %}
             <span class="glyphicon glyphicon-heart"></span>
         </span>
+    </div>
     {% if user %}
         {% if user.name == post.post_submitter %}
-        <button type="button" class="btn btn-primary">Edit</button>
-        <button type="button" class="btn btn-danger">Delete</button>
+        <button id="edit-post-btn" type="button" class="btn btn-primary" data-value="{{ post.key.id() }}">Edit</button>
+        <button id="delete-post-btn" type="button" class="btn btn-danger" data-value="{{ post.key.id() }}">Delete</button>
         {% else %}
-
             {% if user.key.id() not in post.liked_by %}
                 <button data-likes="{{ post.post_likes }}"
                     data-value="{{ post.key.id() }}"
@@ -34,42 +34,45 @@
             {% endif %}
         {% endif %}
     {% endif %}
-    </div>
 </div>
-{% for comment in comments %}
-<div class="media comment">
-    <a class="pull-left" href="#">
-        <img class="media-object" src="http://placehold.it/64x64" alt="">
-    </a>
-    <div class="media-body">
-    <h4 class="media-heading">{{ comment.comment_submitter}} <small> at {{ comment.comment_created.strftime('%Y-%m-%d-%I:%M') }}</small></h4>
-    <p>{{ comment.comment_body | safe }}</p>
-    <span class="number-of-likes pull-right" id="likes">
-        {% if comment.comment_likes >= 0 %}
-        {{ comment.comment_likes }}
-        {% else %}
-        0
+    {% if comments %}
+        {% for comment in comments %}
+        <div class="media comment">
+            <a class="pull-left" href="#">
+                <img class="media-object" src="http://placehold.it/64x64" alt="">
+            </a>
+            <div class="media-body">
+            <h4 class="media-heading">{{ comment.comment_submitter}} <small> at {{ comment.comment_created.strftime('%Y-%m-%d-%I:%M') }}</small></h4>
+            <p>{{ comment.comment_body | safe }}</p>
+            <span class="number-of-likes pull-right" id="likes">
+                {% if comment.comment_likes >= 0 %}
+                {{ comment.comment_likes }}
+                {% else %}
+                0
+                {% endif %}
+                <span class="glyphicon glyphicon-heart"></span>
+            </span>
+            </div>
+        {% if user %}
+            {% if user.name == comment.comment_submitter %}
+            <button type="button" class="btn btn-primary">Edit</button>
+            <button type="button" class="btn btn-danger">Delete</button>
+            {% else %}
+                {% if user.key.id() not in comment.liked_by %}
+                    <button data-likes="{{ comment.comment_likes }}"
+                        data-value="{{ comment.key.id() }}"
+                        data-user="{{ user.key.id() }}"
+                        class="like-comment-btn btn btn-primary pull-right">
+                        <span class="glyphicon glyphicon-hand-up"></span> Like
+                    </button>
+                {% endif %}
+            {% endif %}
         {% endif %}
-        <span class="glyphicon glyphicon-heart"></span>
-    </span>
-    </div>
-{% if user %}
-    {% if user.name == comment.comment_submitter %}
-    <button type="button" class="btn btn-primary">Edit</button>
-    <button type="button" class="btn btn-danger">Delete</button>
+        </div>
+        {% endfor %}
     {% else %}
-        {% if user.key.id() not in comment.liked_by %}
-            <button data-likes="{{ comment.comment_likes }}"
-                data-value="{{ comment.key.id() }}"
-                data-user="{{ user.key.id() }}"
-                class="like-comment-btn btn btn-primary pull-right">
-                <span class="glyphicon glyphicon-hand-up"></span> Like
-            </button>
-        {% endif %}
+        <div class="media comment"></div>
     {% endif %}
-{% endif %}
-</div>
-{% endfor %}
     <div id="loading"></div>
 <div class="well comment-box">
     {% if user %}
@@ -84,7 +87,7 @@
             <textarea id="comment-body" name="comment-body" class="form-control" rows="3"></textarea>
             <label id="comment-body-error" style="display:none;" class="control-label" for="comment">Please enter a comment body.</label>
         </div>
-        <input id="submit-comment-btn" value="Submit" type="submit" name="create-comment" class="btn btn-primary"></input>
+        <input id="submit-comment-btn" value="Submit" type="submit" name="create-comment" class="btn btn-primary">
     </form>
     {% else %}
     <p>Please sign in to leave a comment.</p>
@@ -92,5 +95,6 @@
 </div>
 {% endblock %}
 {% block javascript %}
-<script src="/static/js/comment.js"></script>
+    <script src="/static/js/comment.js"></script>
+    <script src="/static/js/posts.js"></script>
 {% endblock %}

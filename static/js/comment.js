@@ -28,7 +28,7 @@ $(function() {
             '<div class="media comment">' +
             '<a class="pull-left" href="#"><img class="media-object" src="http://placehold.it/64x64" alt=""></a>' +
             '<div class="media-body">' +
-            '<h4 class="media-heading">' + commentSubmitter + ' at ' + Date.now() + '</small></h4>' +
+            '<h4 class="media-heading">' + commentSubmitter + ' <small> at ' + Date.now() + '</small></h4>' +
             commentBody +
             '<span class="number-of-likes pull-right" id="likes"> 0 <span class="glyphicon glyphicon-heart"></span>' +
             '</span></span></div>' +
