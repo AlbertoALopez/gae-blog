@@ -1,6 +1,5 @@
 """Handler for new comments."""
 from BaseHandler import Handler
-from google.appengine.ext import ndb
 from models import Comments
 import json
 
@@ -10,7 +9,7 @@ class NewComment(Handler):
 
     def post(self):
         """Handle POST requests."""
-        parent = self.request.get("parent")
+        parent = int(self.request.get("parent"))
         comment_submitter = self.request.get("comment-submitter")
         comment_body = self.request.get("comment-body")
 
@@ -21,15 +20,17 @@ class NewComment(Handler):
                          comment_body=comment_body)
             comment.put()
 
+            comment_id = comment.key.id()
+
             # Output json to AJAX response
             self.response.headers['Content-Type'] = 'application/json'
-            jsonObj = {
+            json_obj = {
                 'commentSubmitter': comment_submitter,
                 'commentBody': comment_body,
                 'parent': parent,
-                'penis': 'penis'
+                'id': comment_id
             }
-            self.response.out.write(json.dumps(jsonObj))
+            self.response.out.write(json.dumps(json_obj))
 
 
 class CommentLiked(Handler):
@@ -47,7 +48,7 @@ class CommentLiked(Handler):
                 comment.comment_likes = 1
 
             else:
-                comment.comment_likes = comment.comment_likes + 1
+                comment.comment_likes += 1
                 comment.put()
 
             # If user has already liked comment do not add again to list

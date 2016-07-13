@@ -17,17 +17,19 @@
                     {% endif %}
                     <span class="glyphicon glyphicon-heart"></span>
                 </span>
-                {% if user.name == post.post_submitter %}
-                <button type="button" class="btn btn-primary">Edit</button>
-                <button type="button" class="btn btn-danger">Delete</button>
-                {% else %}
-                    {% if user.key.id() not in post.liked_by %}
-                        <button data-likes="{{ post.post_likes }}"
-                            data-value="{{ post.key.id() }}"
-                            data-user="{{ user.key.id() }}"
-                            class="like-post-btn btn btn-primary pull-right">
-                            <span class="glyphicon glyphicon-hand-up"></span> Like
-                        </button>
+                {% if user %}
+                    {% if user.name == post.post_submitter %}
+                    <button type="button" class="btn btn-primary">Edit</button>
+                    <button type="button" class="btn btn-danger">Delete</button>
+                    {% else %}
+                        {% if user.key.id() not in post.liked_by %}
+                            <button data-likes="{{ post.post_likes }}"
+                                data-value="{{ post.key.id() }}"
+                                data-user="{{ user.key.id() }}"
+                                class="like-post-btn btn btn-primary pull-right">
+                                <span class="glyphicon glyphicon-hand-up"></span> Like
+                            </button>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
             </div>
