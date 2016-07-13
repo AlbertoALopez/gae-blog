@@ -33,6 +33,22 @@
                 </button>
             {% endif %}
         {% endif %}
+        <div class="well post-edit-box" style="display: none;">
+            <h4>Edit post:</h4>
+            <form id="edit-post-form" role="form">
+                <div class="form-group">
+                    <label for="Author">Posting as {{ user.name }}</label>
+                    <input id="post-submitter" type="hidden" name="post-submitter" value="{{ user.name }}">
+                    <input id="post-id" type="hidden" name="post-id" value="{{ post.key.id() }}">
+                </div>
+                <div id="post-form-textarea" class="form-group">
+                    <textarea id="post-body" name="post-body" class="form-control" rows="3">{{ post.post_body }}</textarea>
+                    <label id="post-body-error" style="display:none;" class="control-label" for="comment">Please enter a post body.</label>
+                </div>
+                <input id="submit-edit-btn" value="Submit" type="submit" name="edit-post" class="btn btn-primary">
+                <button id="close-edit" class="pull-right btn btn-primary">Close</button>
+            </form>
+        </div>
     {% endif %}
 </div>
     {% if comments %}
@@ -77,7 +93,7 @@
 <div class="well comment-box">
     {% if user %}
     <h4>Leave a Comment:</h4>
-    <form id="comment-form" action="/blog/newcomment" method="post" role="form">
+    <form id="comment-form" role="form">
         <div class="form-group">
             <label for="Author">Posting as {{ user.name }}</label>
             <input id="comment-submitter" type="hidden" name="comment-submitter" value="{{ user.name }}">

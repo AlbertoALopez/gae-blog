@@ -1,8 +1,9 @@
 """A multi user blog using GAE with jinja2 templates."""
+
 import webapp2
 from models import Posts
 from BaseHandler import Handler
-from PostHandler import NewPost, PostLiked
+from PostHandler import NewPost, PostLiked, PostEdit
 from GetPostHandler import GetPost
 from FormHandler import FormHandler
 from LoginHandler import LoginHandler
@@ -31,4 +32,5 @@ app = webapp2.WSGIApplication([
     ('/blog/logout', LogoutHandler),
     ('/blog/newcomment', NewComment),
     ('/blog/commentliked', CommentLiked),
-    ('/blog/postliked', PostLiked)], debug=True)
+    ('/blog/postliked', PostLiked),
+    ('/blog/editpost', PostEdit)], debug=True)

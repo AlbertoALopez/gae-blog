@@ -150,6 +150,10 @@ h6, .h6 {
   color: #999;
 }
 
+.post-edit-box {
+    margin-top: 20px;
+}
+
 /*
  * Like areas on post and comments
  */

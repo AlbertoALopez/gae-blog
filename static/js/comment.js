@@ -1,4 +1,5 @@
-/* Handles real time comment generation, post submission, post edits and likes */
+/* AJAX functions for real time comment generation, likes, edits and deletes */
+
 $(function() {
     // Tinymce init options
     tinymce.init({
@@ -18,7 +19,7 @@ $(function() {
 
     // AJAX handler for new comments
     $("#submit-comment-btn").click(function() {
-        var commentBody = $("textarea").val();
+        var commentBody = $("textarea#comment-body").val();
         var parent = $("#parent").val();
         var commentSubmitter = $("#comment-submitter").val();
         var lastComment = $(".comment").last();
@@ -60,7 +61,7 @@ $(function() {
                        'comment-body': commentBody},
                 cache: false,
                 success: function(response) {
-                    $("#loading").hide();
+                    $("#loading").hide("slow");
                     lastComment.after(liveComment);
                 }
             });
@@ -101,38 +102,6 @@ $(function() {
                 prev.html(commentHtml);
             }
         });
-    }); // End PUT for comment likes
+    }); // End PUT for likes
 
-    // AJAX handler to update post likes
-    $(".like-post-btn").click(function(event) {
-        event.stopPropagation();
-        var postId = $(this).data('value');
-        var likeAmount = $(this).data('likes');
-        var postLiker = $(this).data('user');
-        var postHtml = likeAmount + " <span class='glyphicon glyphicon-heart'></span>";
-        var prev = $(this).prev().find(".number-of-likes");
-
-        if (likeAmount === "None") {
-            likeAmount = 1 ;
-        }
-        else {
-            likeAmount++;
-        }
-
-        // Disable like button so user cannot like more than once
-        $(this).prop("disabled", true);
-
-        $.ajax({
-            type: "PUT",
-            url: "/blog/postliked",
-            data: {
-                'post-id': postId,
-                'post-liker': postLiker
-            },
-            cache: false,
-            success: function(response) {
-                prev.html(postHtml);
-            }
-        });
-    }); // End PUT for post likes
 });

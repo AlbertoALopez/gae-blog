@@ -73,6 +73,23 @@ class PostLiked(Handler):
             post.liked_by.append(int(post_liker))
             post.put()
 
-        # Else render HTTP error message
         else:
-            self.error_handlers[404] = self.handle_error
+            self.error(500)
+
+
+class PostEdit(Handler):
+    """Handler for post edits."""
+
+    def put(self):
+        """Handler for PUT requests."""
+        post_id = self.request.get("post-id")
+        post_body = self.request.get("post-body")
+        post = Posts.return_post(post_id)
+
+        if post:
+            post.post_body = post_body
+            post.put()
+
+        else:
+            self.error(500)
+
