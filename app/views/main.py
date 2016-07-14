@@ -3,13 +3,13 @@
 import webapp2
 from models import Posts
 from BaseHandler import Handler
-from PostHandler import NewPost, PostLiked, PostEdit
+from PostHandler import NewPost, LikePost, EditPost
 from GetPostHandler import GetPost
 from FormHandler import FormHandler
 from LoginHandler import LoginHandler
 from WelcomeHandler import WelcomeHandler
 from LogoutHandler import LogoutHandler
-from CommentHandler import NewComment, CommentLiked, CommentEdit
+from CommentHandler import NewComment, LikeComment, EditComment, DeleteComment
 
 
 class MainPage(Handler):
@@ -24,14 +24,15 @@ class MainPage(Handler):
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/blog/newpost', NewPost),
-    ('/blog/([0-9]+)', GetPost),
     ('/blog/signup', FormHandler),
     ('/blog/welcome', WelcomeHandler),
     ('/blog/login', LoginHandler),
     ('/blog/logout', LogoutHandler),
     ('/blog/newcomment', NewComment),
-    ('/blog/commentliked', CommentLiked),
-    ('/blog/editcomment', CommentEdit),
-    ('/blog/postliked', PostLiked),
-    ('/blog/editpost', PostEdit)], debug=True)
+    ('/blog/likecomment', LikeComment),
+    ('/blog/editcomment', EditComment),
+    ('/blog/deletecomment', DeleteComment),
+    ('/blog/newpost', NewPost),
+    ('/blog/([0-9]+)', GetPost),
+    ('/blog/likepost', LikePost),
+    ('/blog/editpost', EditPost)], debug=True)

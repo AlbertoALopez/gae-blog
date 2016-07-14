@@ -1,4 +1,4 @@
-"""Handler for new posts created."""
+"""Handler for posts."""
 from BaseHandler import Handler
 from models import Posts
 from models import blog_key
@@ -46,7 +46,7 @@ class NewPost(Handler):
                              post_title=post_title, post_body=post_body)
 
 
-class PostLiked(Handler):
+class LikePost(Handler):
     """Handler for post likes."""
 
     def put(self):
@@ -77,7 +77,7 @@ class PostLiked(Handler):
             self.error(500)
 
 
-class PostEdit(Handler):
+class EditPost(Handler):
     """Handler for post edits."""
 
     def put(self):

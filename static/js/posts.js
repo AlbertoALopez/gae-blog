@@ -59,7 +59,7 @@ $(function() {
 
         $.ajax({
             type: "PUT",
-            url: "/blog/postliked",
+            url: "/blog/likepost",
             data: {
                 'post-id': postId,
                 'post-liker': postLiker

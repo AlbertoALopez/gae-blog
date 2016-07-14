@@ -1,4 +1,6 @@
-"""Handler for new comments."""
+"""Handlers for comments."""
+
+from google.appengine.ext import ndb
 from BaseHandler import Handler
 from models import Comments
 import json
@@ -33,7 +35,7 @@ class NewComment(Handler):
             self.response.out.write(json.dumps(json_obj))
 
 
-class CommentLiked(Handler):
+class LikeComment(Handler):
     """Handler for new comment likes."""
 
     def put(self):
@@ -65,7 +67,7 @@ class CommentLiked(Handler):
             self.error(500)
 
 
-class CommentEdit(Handler):
+class EditComment(Handler):
     """Handler for comment edits."""
 
     def put(self):
@@ -82,3 +84,16 @@ class CommentEdit(Handler):
             self.error(500)
 
 
+class DeleteComment(Handler):
+    """Handler for comment deletion."""
+
+    def put(self):
+        """Handle PUT requests."""
+        comment_id = self.request.get("comment-id")
+        comment_key = ndb.Key('Comments', int(comment_id))
+
+        if comment_key:
+            comment_key.delete()
+
+        else:
+            self.error(500)

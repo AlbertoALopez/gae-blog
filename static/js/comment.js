@@ -68,9 +68,11 @@ $(function() {
             $.ajax({
                 type: "POST",
                 url: "/blog/newcomment",
-                data: {'parent': parent,
-                       'comment-submitter': commentSubmitter,
-                       'comment-body': commentBody},
+                data: {
+                    'parent': parent,
+                    'comment-submitter': commentSubmitter,
+                    'comment-body': commentBody
+                },
                 cache: false,
                 success: function(response) {
                     $("#loading").hide("slow");
@@ -80,7 +82,27 @@ $(function() {
         }
 
         return false;
-    }); // End POST for comment
+    }); // End POST for new comment
+
+    // AJAX handler for comment deletion
+    $(".delete-comment-btn").click(function(event) {
+        var commentId = $(this).data("id");
+        var _this = this;
+
+        $.ajax({
+            type: "PUT",
+            url: "/blog/deletecomment",
+            data: {
+                'comment-id': commentId
+            },
+            cache: false,
+            success: function(response) {
+                $(_this).parent().hide("slow");
+            }
+        });
+
+        return false;
+    });
 
     // AJAX handler to update comment likes
     $(".like-comment-btn").click(function(event) {
@@ -104,7 +126,7 @@ $(function() {
 
         $.ajax({
             type: "PUT",
-            url: "/blog/commentliked",
+            url: "/blog/likecomment",
             data: {
                 'comment-id': commentId,
                 'comment-liker': commentLiker
@@ -114,7 +136,7 @@ $(function() {
                 prev.html(commentHtml);
             }
         });
-        
+
     }); // End PUT for likes
     
     

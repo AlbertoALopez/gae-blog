@@ -22,18 +22,18 @@ class User(ndb.Model):
     email = ndb.StringProperty()
 
     @classmethod
-    def get_user_by_id(CLASS, uid):
+    def get_user_by_id(cls, uid):
         """Retrieves user object by its id."""
         return User.get_by_id(uid, parent=users_key())
 
     @classmethod
-    def get_user_by_name(CLASS, name):
+    def get_user_by_name(cls, name):
         """Retrieves user object by its name."""
         user = User.query(User.name == name).get()
         return user
 
     @classmethod
-    def register(CLASS, name, password, email=None):
+    def register(cls, name, password, email=None):
         """Registers a new user."""
         hashed_pw = make_pw_hash(name, password)
         return User(parent=users_key(),
@@ -42,9 +42,9 @@ class User(ndb.Model):
                     email=email)
 
     @classmethod
-    def user_login(CLASS, name, password):
+    def user_login(cls, name, password):
         """Verifies that a user can login."""
-        user = CLASS.get_user_by_name(name)
+        user = cls.get_user_by_name(name)
         if user and valid_pw(name, password, user.hashed_pw):
             return user
 
@@ -62,13 +62,13 @@ class Posts(ndb.Model):
     last_edited = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
-    def return_posts_desc(CLASS):
+    def return_posts_desc(cls):
         """Returns a list of descending posts."""
         posts = ndb.gql("SELECT * FROM Posts ORDER BY post_created DESC LIMIT 10")
         return posts
 
     @classmethod
-    def return_post(CLASS, post_id):
+    def return_post(cls, post_id):
         """Return a post by the given id."""
         key = ndb.Key('blogs', 'default', 'Posts', int(post_id))
         post = key.get()
@@ -84,15 +84,16 @@ class Comments(ndb.Model):
     comment_likes = ndb.IntegerProperty()
     parent = ndb.IntegerProperty()
     liked_by = ndb.IntegerProperty(repeated=True)
+    last_edited = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
-    def return_comments(CLASS, parent_id):
+    def return_comments(cls, parent_id):
         """Returns all comments in store that have the given parent."""
         comments = Comments.query(Comments.parent == int(parent_id)).order(Comments.comment_created).fetch()
         return comments
 
     @classmethod
-    def return_comment(CLASS, comment_id):
+    def return_comment(cls, comment_id):
         """Return comment with specific id."""
         key = ndb.Key('Comments', int(comment_id))
         comment = key.get()

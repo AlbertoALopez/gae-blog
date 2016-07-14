@@ -72,7 +72,7 @@
             {% if user %}
                 {% if user.name == comment.comment_submitter %}
                 <button type="button" class="open-edit-comment-btn btn btn-primary">Edit</button>
-                <button type="button" class="delete-comment-btn btn btn-danger">Delete</button>
+                <button type="button" data-id="{{ comment.key.id() }}" class="delete-comment-btn btn btn-danger">Delete</button>
                 {% else %}
                     {% if user.key.id() not in comment.liked_by %}
                         <button data-likes="{{ comment.comment_likes }}"
