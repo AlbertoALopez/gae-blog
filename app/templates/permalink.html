@@ -21,7 +21,7 @@
     </div>
     {% if user %}
         {% if user.name == post.post_submitter %}
-        <button id="edit-post-btn" type="button" class="btn btn-primary" data-value="{{ post.key.id() }}">Edit</button>
+        <button id="open-edit-post-btn" type="button" class="btn btn-primary" data-value="{{ post.key.id() }}">Edit</button>
         <button id="delete-post-btn" type="button" class="btn btn-danger" data-value="{{ post.key.id() }}">Delete</button>
         {% else %}
             {% if user.key.id() not in post.liked_by %}
@@ -46,45 +46,60 @@
                     <label id="post-body-error" style="display:none;" class="control-label" for="comment">Please enter a post body.</label>
                 </div>
                 <input id="submit-edit-btn" value="Submit" type="submit" name="edit-post" class="btn btn-primary">
-                <button id="close-edit" class="pull-right btn btn-primary">Close</button>
+                <button id="close-edit-post-btn" class="pull-right btn btn-primary">Close</button>
             </form>
         </div>
     {% endif %}
 </div>
     {% if comments %}
         {% for comment in comments %}
-        <div class="media comment">
-            <a class="pull-left" href="#">
-                <img class="media-object" src="http://placehold.it/64x64" alt="">
-            </a>
-            <div class="media-body">
-            <h4 class="media-heading">{{ comment.comment_submitter}} <small> at {{ comment.comment_created.strftime('%Y-%m-%d-%I:%M') }}</small></h4>
-            <p>{{ comment.comment_body | safe }}</p>
-            <span class="number-of-likes pull-right" id="likes">
-                {% if comment.comment_likes >= 0 %}
-                {{ comment.comment_likes }}
+            <div class="media comment">
+                <a class="pull-left" href="#">
+                    <img class="media-object" src="http://placehold.it/64x64" alt="">
+                </a>
+                <div class="media-body">
+                <h4 class="media-heading">{{ comment.comment_submitter}} <small> at {{ comment.comment_created.strftime('%Y-%m-%d-%I:%M') }}</small></h4>
+                <div id="comment-body">{{ comment.comment_body | safe }}</div>
+                <span class="number-of-likes pull-right" id="likes">
+                    {% if comment.comment_likes >= 0 %}
+                    {{ comment.comment_likes }}
+                    {% else %}
+                    0
+                    {% endif %}
+                    <span class="glyphicon glyphicon-heart"></span>
+                </span>
+                </div>
+            {% if user %}
+                {% if user.name == comment.comment_submitter %}
+                <button type="button" class="open-edit-comment-btn btn btn-primary">Edit</button>
+                <button type="button" class="delete-comment-btn btn btn-danger">Delete</button>
                 {% else %}
-                0
-                {% endif %}
-                <span class="glyphicon glyphicon-heart"></span>
-            </span>
-            </div>
-        {% if user %}
-            {% if user.name == comment.comment_submitter %}
-            <button type="button" class="btn btn-primary">Edit</button>
-            <button type="button" class="btn btn-danger">Delete</button>
-            {% else %}
-                {% if user.key.id() not in comment.liked_by %}
-                    <button data-likes="{{ comment.comment_likes }}"
-                        data-value="{{ comment.key.id() }}"
-                        data-user="{{ user.key.id() }}"
-                        class="like-comment-btn btn btn-primary pull-right">
-                        <span class="glyphicon glyphicon-hand-up"></span> Like
-                    </button>
+                    {% if user.key.id() not in comment.liked_by %}
+                        <button data-likes="{{ comment.comment_likes }}"
+                            data-value="{{ comment.key.id() }}"
+                            data-user="{{ user.key.id() }}"
+                            class="like-comment-btn btn btn-primary pull-right">
+                            <span class="glyphicon glyphicon-hand-up"></span> Like
+                        </button>
+                    {% endif %}
                 {% endif %}
             {% endif %}
-        {% endif %}
-        </div>
+            </div>
+            <div class="well comment-edit-box" style="display: none;">
+                <h4>Edit comment:</h4>
+                <form id="edit-comment-form" role="form">
+                    <div class="form-group">
+                        <label for="Author">Posting as {{ user.name }}</label>
+                        <input id="comment-id" type="hidden" name="comment-id" value="{{ comment.key.id() }}">
+                    </div>
+                    <div id="post-form-textarea" class="form-group">
+                        <textarea id="comment-body" name="comment-body" class="form-control" rows="3">{{ comment.comment_body }}</textarea>
+                        <label id="comment-body-error" style="display:none;" class="control-label" for="comment">Please enter a comment body.</label>
+                    </div>
+                    <input value="Submit" type="submit" name="edit-comment" class="submit-comment-edit-btn btn btn-primary">
+                    <button class="close-edit-comment-btn pull-right btn btn-primary">Close</button>
+                </form>
+            </div>
         {% endfor %}
     {% else %}
         <div class="media comment"></div>

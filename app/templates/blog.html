@@ -17,6 +17,7 @@
                     {% endif %}
                     <span class="glyphicon glyphicon-heart"></span>
                 </span>
+            </div>
                 {% if user %}
                     {% if user.name == post.post_submitter %}
                     <button type="button" class="btn btn-primary">Edit</button>
@@ -32,7 +33,6 @@
                         {% endif %}
                     {% endif %}
                 {% endif %}
-            </div>
         </div>
     {% endfor %}
       <nav>

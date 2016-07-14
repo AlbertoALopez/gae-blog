@@ -37,7 +37,7 @@ class CommentLiked(Handler):
     """Handler for new comment likes."""
 
     def put(self):
-        """Handler for PUT requests."""
+        """Handle PUT requests."""
         comment_id = self.request.get("comment-id")
         comment_liker = int(self.request.get("comment-liker"))
         comment = Comments.return_comment(comment_id)
@@ -62,4 +62,23 @@ class CommentLiked(Handler):
 
         # Else render HTTP error message
         else:
-            self.error_handlers[404] = self.handle_error
+            self.error(500)
+
+
+class CommentEdit(Handler):
+    """Handler for comment edits."""
+
+    def put(self):
+        """Handle PUT requests."""
+        comment_id = self.request.get("comment-id")
+        comment_body = self.request.get("comment-body")
+        comment = Comments.return_comment(comment_id)
+
+        if comment:
+            comment.comment_body = comment_body
+            comment.put()
+
+        else:
+            self.error(500)
+
+

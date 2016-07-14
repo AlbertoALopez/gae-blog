@@ -5,12 +5,12 @@
 $(function() {
 
     // Open and close edit post area
-    $("#edit-post-btn").click(function(event) {
+    $("#open-edit-post-btn").click(function(event) {
         $(".post-edit-box").fadeIn("slow");
         return false;
     });
 
-    $("#close-edit").click(function(event) {
+    $("#close-edit-post-btn").click(function(event) {
         $(".post-edit-box").hide("slow");
         return false;
     });
@@ -36,7 +36,7 @@ $(function() {
         });
 
         return false;
-    });
+    }); // End PUT for body
 
     // AJAX handler to update post likes
     $(".like-post-btn").click(function(event) {
@@ -69,6 +69,6 @@ $(function() {
                 prev.html(postHtml);
             }
         });
-    }); // End PUT
+    }); // End PUT for likes
 });
 

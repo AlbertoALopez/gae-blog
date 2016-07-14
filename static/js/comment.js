@@ -12,6 +12,18 @@ $(function() {
         }
     });
 
+    // Open and close edit comment area
+    $(".open-edit-comment-btn").click(function(event) {
+        $(this).parent().next().fadeIn("slow");
+        return false;
+    });
+
+    $(".close-edit-comment-btn").click(function(event) {
+        $(this).parent().parent().hide("slow");
+        return false;
+    });
+
+
     // Stop propagation and default behaviour on form submit
     $("#comment-form").submit(function(e) {
         return false;
@@ -102,6 +114,32 @@ $(function() {
                 prev.html(commentHtml);
             }
         });
+        
     }); // End PUT for likes
+    
+    
+    // AJAX handler for comment edits
+    $(".submit-comment-edit-btn").click(function() {
+        var commentId = $(this).parent().find("#comment-id").val();
+        var commentEditBody = $(this).parent().find("textarea#comment-body").val();
+        var originalCommentBody = $(this).parent().parent().prev().find("#comment-body");
+        var commentEditBox = $(this).parent().parent();
+         
+        $.ajax({
+            type: "PUT",
+            url: "/blog/editcomment",
+            data: {
+                'comment-id': commentId,
+                'comment-body': commentEditBody
+            },
+            cache: false,
+            success: function(response) {
+                originalCommentBody.html(commentEditBody);
+                commentEditBox.hide("slow");
+            }
+        });
+
+        return false;
+    }); // End PUT for edits
 
 });
