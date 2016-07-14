@@ -22,7 +22,7 @@
     {% if user %}
         {% if user.name == post.post_submitter %}
         <button id="open-edit-post-btn" type="button" class="btn btn-primary" data-value="{{ post.key.id() }}">Edit</button>
-        <button id="delete-post-btn" type="button" class="btn btn-danger" data-value="{{ post.key.id() }}">Delete</button>
+        <button id="delete-post-btn" type="button" class="btn btn-danger" data-id="{{ post.key.id() }}">Delete</button>
         {% else %}
             {% if user.key.id() not in post.liked_by %}
                 <button data-likes="{{ post.post_likes }}"

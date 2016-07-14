@@ -1,4 +1,6 @@
 """Handler for posts."""
+
+from google.appengine.ext import ndb
 from BaseHandler import Handler
 from models import Posts
 from models import blog_key
@@ -61,7 +63,7 @@ class LikePost(Handler):
                 post.post_likes = 1
 
             else:
-                post.post_likes = post.post_likes + 1
+                post.post_likes += 1
                 post.put()
 
             # If user has already liked post do not add again to list
@@ -93,3 +95,17 @@ class EditPost(Handler):
         else:
             self.error(500)
 
+
+class DeletePost(Handler):
+    """Handler for post deletion."""
+
+    def put(self):
+        """Handler for put requests."""
+        post_id = self.request.get("post-id")
+        post_key = ndb.Key('blogs', 'default', 'Posts', int(post_id))
+
+        if post_key:
+            post_key.delete()
+
+        else:
+            self.error(500)

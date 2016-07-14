@@ -3,7 +3,7 @@
 import webapp2
 from models import Posts
 from BaseHandler import Handler
-from PostHandler import NewPost, LikePost, EditPost
+from PostHandler import NewPost, LikePost, EditPost, DeletePost
 from GetPostHandler import GetPost
 from FormHandler import FormHandler
 from LoginHandler import LoginHandler
@@ -35,4 +35,5 @@ app = webapp2.WSGIApplication([
     ('/blog/newpost', NewPost),
     ('/blog/([0-9]+)', GetPost),
     ('/blog/likepost', LikePost),
-    ('/blog/editpost', EditPost)], debug=True)
+    ('/blog/editpost', EditPost),
+    ('/blog/deletepost', DeletePost)], debug=True)

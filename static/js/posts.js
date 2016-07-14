@@ -70,5 +70,24 @@ $(function() {
             }
         });
     }); // End PUT for likes
+
+    // AJAX handler for post deletion
+    $("#delete-post-btn").click(function(event) {
+        var postId = $(this).data("id");
+
+        $.ajax({
+            type: "PUT",
+            url: "/blog/deletepost",
+            data: {
+                'post-id': postId
+            },
+            cache: false,
+            success: function(response) {
+                 window.location.href = "/blog/welcome";
+            }
+        });
+
+        return false;
+    });
 });
 
