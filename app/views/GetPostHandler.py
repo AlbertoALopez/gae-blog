@@ -1,8 +1,7 @@
 """Handler that retrieves individual posts."""
 from BaseHandler import Handler
 from google.appengine.ext import ndb
-from models import blog_key
-from models import Comments
+from app.models.models import blog_key, Comments
 
 
 class GetPost(Handler):

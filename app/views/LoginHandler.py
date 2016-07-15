@@ -1,7 +1,7 @@
 """Handler for the login page."""
 from BaseHandler import Handler
-from formverification import *
-from models import User
+from utilities.formverification import *
+from app.models.models import User
 
 
 class LoginHandler(Handler):

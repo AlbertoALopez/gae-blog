@@ -1,7 +1,7 @@
 """Creates a signup page with basic validation and redirection."""
 from BaseHandler import Handler
-from models import User
-from formverification import *
+from app.models.models import User
+from utilities.formverification import *
 
 
 class FormHandler(Handler):

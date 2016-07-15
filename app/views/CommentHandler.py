@@ -2,7 +2,7 @@
 
 from google.appengine.ext import ndb
 from BaseHandler import Handler
-from models import Comments
+from app.models.models import Comments
 import json
 
 

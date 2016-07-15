@@ -1,7 +1,7 @@
 """A multi user blog using GAE with jinja2 templates."""
 
 import webapp2
-from models import Posts
+from app.models.models import Posts
 from BaseHandler import Handler
 from PostHandler import NewPost, LikePost, EditPost, DeletePost
 from GetPostHandler import GetPost

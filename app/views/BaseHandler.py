@@ -2,10 +2,8 @@
 import webapp2
 import os
 import jinja2
-import json
-from password import make_secure_val
-from password import check_secure_val
-from models import User
+from app.views.utilities.password import make_secure_val, check_secure_val
+from app.models.models import User
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), '..', 'templates')
 JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR),
@@ -13,7 +11,7 @@ JINJA_ENV = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR),
 
 
 class Handler(webapp2.RequestHandler):
-    """Provides convenience functions for rendering templates and strings."""
+    """Provides convenience functions common to all routing handlers."""
 
     def write(self, *a, **kw):
         """Writes to page."""
@@ -25,7 +23,7 @@ class Handler(webapp2.RequestHandler):
         return t.render(params)
 
     def render(self, template, **kw):
-        """Renders the jinja template with the given parameters."""
+        """Renders template and given paramaters to page."""
         self.write(self.render_str(template, **kw))
 
     def set_secure_cookie(self, name, val):
@@ -50,22 +48,7 @@ class Handler(webapp2.RequestHandler):
         self.response.headers.add_header('Set-Cookie', 'user_id=; Path=/')
 
     def initialize(self, *a, **kw):
-        """Reads if there is any set cookies and sets them"""
-        """to a global user object."""
+        """Reads if there is any cookies and sets a global user object."""
         webapp2.RequestHandler.initialize(self, *a, **kw)
         uid = self.read_secure_cookie('user_id')
         self.user = uid and User.get_user_by_id(int(uid))
-
-    def handle_error(request, response, exception):
-        """Error handler for HTTP errors."""
-        if request.path.startswith('/json'):
-            response.headers.add_header('Content-Type', 'application/json')
-            result = {
-                'status': 'error',
-                'status_code': exception.code,
-                'error_message': exception.explanation,
-              }
-            response.write(json.dumps(result))
-        else:
-            response.write(exception)
-            response.set_status(exception.code)

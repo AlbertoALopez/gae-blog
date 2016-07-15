@@ -1,7 +1,6 @@
 """Database models."""
 from google.appengine.ext import ndb
-from password import make_pw_hash
-from password import valid_pw
+from app.views.utilities.password import make_pw_hash, valid_pw
 
 
 def blog_key(name="default"):

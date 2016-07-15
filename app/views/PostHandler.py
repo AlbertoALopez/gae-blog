@@ -2,8 +2,7 @@
 
 from google.appengine.ext import ndb
 from BaseHandler import Handler
-from models import Posts
-from models import blog_key
+from app.models.models import Posts, blog_key
 import bleach
 
 
