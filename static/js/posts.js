@@ -14,13 +14,13 @@ $(function() {
         $(".post-edit-box").hide("slow");
         return false;
     });
-    
+
     // AJAX handler for post edits
     $("#submit-edit-btn").click(function() {
         var postId = $("#post-id").val();
         var postEditBody = $("textarea#post-body").val();
         var postOriginalBody = $("#post-body");
-         
+
         $.ajax({
             type: "PUT",
             url: "/blog/editpost",
@@ -40,7 +40,6 @@ $(function() {
 
     // AJAX handler to update post likes
     $(".like-post-btn").click(function(event) {
-        event.stopPropagation();
         var postId = $(this).data('value');
         var likeAmount = $(this).data('likes');
         var postLiker = $(this).data('user');
@@ -69,6 +68,8 @@ $(function() {
                 prev.html(postHtml);
             }
         });
+
+        return false;
     }); // End PUT for likes
 
     // AJAX handler for post deletion
@@ -90,4 +91,3 @@ $(function() {
         return false;
     });
 });
-

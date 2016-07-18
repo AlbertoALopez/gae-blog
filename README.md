@@ -17,5 +17,12 @@ First make sure you have a version of Python 2.7, as well as the latest google a
 
 `dev_appserver.py .` to start develeopment server
 
-To deploy the app, as per the documentation: `appcfg.py -A [YOUR_PROJECT_ID] -V v1 update ./`
+To deploy the app, as per the Google App Engine documentation: `appcfg.py -A [YOUR_PROJECT_ID] -V v1 update ./`
 Your project will be running live at `http://[YOUR_PROJECT_ID].appspot.com/`.
+
+## TODO
+
+* Update CSS
+* Add an admin dashboard and account
+* Add a user profile page with relevant user information and dashboard
+* Write unit tests and integration tests

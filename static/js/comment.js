@@ -32,7 +32,7 @@ $(function() {
     // AJAX handler for new comments
     $("#submit-comment-btn").click(function() {
         var commentBody = $("textarea#comment-body").val();
-        var parent = $("#parent").val();
+        var commentParent = $("#parent").val();
         var commentSubmitter = $("#comment-submitter").val();
         var lastComment = $(".comment").last();
 
@@ -69,7 +69,7 @@ $(function() {
                 type: "POST",
                 url: "/blog/newcomment",
                 data: {
-                    'parent': parent,
+                    'parent': commentParent,
                     'comment-submitter': commentSubmitter,
                     'comment-body': commentBody
                 },
@@ -111,7 +111,7 @@ $(function() {
         var likeAmount = $(this).data('likes');
         var commentLiker = $(this).data('user');
         var commentHtml = likeAmount + " <span class='glyphicon glyphicon-heart'></span>";
-        var prev = $(this).prev().find(".number-of-likes");
+        var likeBoxHtml = $(this).prev().find(".number-of-likes");
 
         // If there are no likes yet, set to 1
         if (likeAmount === "None") {
@@ -133,20 +133,20 @@ $(function() {
             },
             cache: false,
             success: function(response) {
-                prev.html(commentHtml);
+                likeBoxHtml.html(commentHtml);
             }
         });
 
     }); // End PUT for likes
-    
-    
+
+
     // AJAX handler for comment edits
     $(".submit-comment-edit-btn").click(function() {
         var commentId = $(this).parent().find("#comment-id").val();
         var commentEditBody = $(this).parent().find("textarea#comment-body").val();
         var originalCommentBody = $(this).parent().parent().prev().find("#comment-body");
         var commentEditBox = $(this).parent().parent();
-         
+
         $.ajax({
             type: "PUT",
             url: "/blog/editcomment",
