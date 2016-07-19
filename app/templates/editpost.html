@@ -1,22 +1,23 @@
-{% extends "base.html" %}
-{% block scripthead %}
+{% extends "base.html" %} {% block scripthead %}
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <script>tinymce.init({ selector:'textarea' });</script>
-{% endblock %}
-{% block content %}
-{% if user %}
-    <form action="" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="post-submitter" value="{{user.name}}">
-        {{error_message | safe}}
+{% endblock %} {% block content %}
+    <form action="/blog/editpost" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Post Title</label>
-            <input type="text" class="form-control" name="post-title">
+            <input type="text" class="form-control" name="post-title" value="{{post.post_title}}">
+            <input type="hidden" class="form-control" name="post-id" value="{{post.key.id()}}">
         </div>
         <div class="form-group">
             <label for="title">Post Category</label>
             <br>
             <select name="post-category" id="">
-               <option value='Bootstrap'>Bootstrap</option><option value='JavaScript'>JavaScript</option><option value='Python'>Python</option><option value='Meow'>Meow</option><option value='Hockey'>Hockey</option>
+                <option value='{{ post.post_category }}' selected>{{ post.post_category }}</option>
+                <option value='Bootstrap'>Bootstrap</option>
+                <option value='JavaScript'>JavaScript</option>
+                <option value='Python'>Python</option>
+                <option value='Meow'>Meow</option>
+                <option value='Hockey'>Hockey</option>
             </select>
         </div>
         <div class="form-group">
@@ -29,7 +30,7 @@
         </div>
         <div class="form-group">
             <label for="post_image">Post Image</label>
-            <input type="file"  name="post-image">
+            <input type="file" name="post-image">
         </div>
         <div class="form-group">
             <label for="post_tags">Post Tags</label>
@@ -37,13 +38,10 @@
         </div>
         <div class="form-group">
             <label for="post_content">Post Content</label>
-            <textarea class="form-control "name="post-body" id="" cols="30" rows="10">{{post_body}}</textarea>
+            <textarea class="form-control " name="post-body" id="" cols="30" rows="10">{{post.post_body}}</textarea>
         </div>
         <div class="form-group">
             <input class="btn btn-primary" type="submit" name="create-post" value="Publish Post">
         </div>
     </form>
-{% else %}
-    <p>Please log in before you post.</p>
-{% endif %}
 {% endblock %}

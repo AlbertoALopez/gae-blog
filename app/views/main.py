@@ -36,4 +36,5 @@ app = webapp2.WSGIApplication([
     ('/blog/([0-9]+)', GetPost),
     ('/blog/likepost', LikePost),
     ('/blog/editpost', EditPost),
+    ('/blog/editpost/([0-9]+)', EditPost),
     ('/blog/deletepost', DeletePost)], debug=True)

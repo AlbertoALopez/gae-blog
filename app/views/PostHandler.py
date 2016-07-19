@@ -79,7 +79,20 @@ class LikePost(Handler):
 
 
 class EditPost(Handler):
-    """Handler for post edits."""
+    """Handler for general post edits."""
+
+    def get(self, post_id):
+        postkey = ndb.Key('Posts', int(post_id), parent=blog_key())
+        post = postkey.get()
+        user = None
+
+        if self.user:
+            user = self.user
+        if not post:
+            self.error(404)
+            return
+
+        self.render("editpost.html", post=post, user=user)
 
     def put(self):
         """Handler for PUT requests."""
@@ -94,12 +107,32 @@ class EditPost(Handler):
         else:
             self.error(500)
 
+    def post(self):
+        """Handler for POST requests."""
+        post_id = self.request.get("post-id")
+        post_title = bleach.clean(self.request.get("post-title"), strip=True)
+        post_body = bleach.clean(self.request.get("post-body"), strip=True)
+        post_category = self.request.get("post-category")
+        post = Posts.return_post(post_id)
+
+        if post:
+            post.populate(
+                post_title=post_title,
+                post_body=post_body,
+                post_category=post_category
+            )
+            post.put()
+            self.redirect("/blog/%s" % str(post.key.id()))
+
+        else:
+            self.error(500)
+
 
 class DeletePost(Handler):
     """Handler for post deletion."""
 
     def put(self):
-        """Handler for put requests."""
+        """Handler for PUT requests."""
         post_id = self.request.get("post-id")
         post_key = ndb.Key('blogs', 'default', 'Posts', int(post_id))
 

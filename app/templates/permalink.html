@@ -107,21 +107,21 @@
     <div id="loading"></div>
 <div class="well comment-box">
     {% if user %}
-    <h4>Leave a Comment:</h4>
-    <form id="comment-form" role="form">
-        <div class="form-group">
-            <label for="Author">Posting as {{ user.name }}</label>
-            <input id="comment-submitter" type="hidden" name="comment-submitter" value="{{ user.name }}">
-            <input id="parent" type="hidden" name="parent" value="{{ post.key.id() }}">
-        </div>
-        <div id="comment-form-textarea" class="form-group">
-            <textarea id="comment-body" name="comment-body" class="form-control" rows="3"></textarea>
-            <label id="comment-body-error" style="display:none;" class="control-label" for="comment">Please enter a comment body.</label>
-        </div>
-        <input id="submit-comment-btn" value="Submit" type="submit" name="create-comment" class="btn btn-primary">
-    </form>
+        <h4>Leave a Comment:</h4>
+        <form id="comment-form" role="form">
+            <div class="form-group">
+                <label for="Author">Posting as {{ user.name }}</label>
+                <input id="comment-submitter" type="hidden" name="comment-submitter" value="{{ user.name }}">
+                <input id="parent" type="hidden" name="parent" value="{{ post.key.id() }}">
+            </div>
+            <div id="comment-form-textarea" class="form-group">
+                <textarea id="comment-body" name="comment-body" class="form-control" rows="3"></textarea>
+                <label id="comment-body-error" style="display:none;" class="control-label" for="comment">Please enter a comment body.</label>
+            </div>
+            <input id="submit-comment-btn" value="Submit" type="submit" name="create-comment" class="btn btn-primary">
+        </form>
     {% else %}
-    <p>Please sign in to leave a comment.</p>
+        <p>Please sign in to leave a comment.</p>
     {% endif %}
 </div>
 {% endblock %}
