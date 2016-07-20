@@ -22,7 +22,9 @@ Your project will be running live at `http://[YOUR_PROJECT_ID].appspot.com/`.
 
 ## TODO
 
-* Update CSS
 * Add an admin dashboard and account
 * Add a user profile page with relevant user information and dashboard
-* Write unit tests and integration tests
+* Connect extra form options on new post page - image, tags, status - to post model
+* Add sorting blog posts by dates and categories
+* Write unit and functional tests
+* Update styling
