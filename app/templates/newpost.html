@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 {% block scripthead %}
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script>tinymce.init({ selector:'textarea' });</script>
 {% endblock %}
 {% block content %}
 {% if user %}
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="/blog/newpost" method="post" enctype="multipart/form-data">
         <input type="hidden" name="post-submitter" value="{{user.name}}">
         {{error_message | safe}}
         <div class="form-group">
@@ -46,4 +45,7 @@
 {% else %}
     <p>Please log in before you post.</p>
 {% endif %}
+{% endblock %}
+{% block javascript %}
+    <script src="/static/js/tinymce.js"></script>
 {% endblock %}

@@ -25,8 +25,8 @@ class NewPost(Handler):
         self.render_page()
 
     def post(self):
-        post_title = bleach.clean(self.request.get("post-title"), strip=True)
-        post_body = bleach.clean(self.request.get("post-body"), strip=True)
+        post_title = self.request.get("post-title")
+        post_body = self.request.get("post-body")
         post_submitter = self.request.get("post-submitter")
         post_category = self.request.get("post-category")
 
@@ -36,6 +36,7 @@ class NewPost(Handler):
                          post_body=post_body,
                          post_submitter=post_submitter,
                          post_category=post_category)
+            print(post_body.encode('utf-8'))
             post.put()
 
             self.redirect("/blog/%s" % str(post.key.id()))
@@ -111,7 +112,7 @@ class EditPost(Handler):
         """Handler for POST requests."""
         post_id = self.request.get("post-id")
         post_title = bleach.clean(self.request.get("post-title"), strip=True)
-        post_body = bleach.clean(self.request.get("post-body"), strip=True)
+        post_body = self.request.get("post-body")
         post_category = self.request.get("post-category")
         post = Posts.return_post(post_id)
 

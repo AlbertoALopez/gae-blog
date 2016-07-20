@@ -5,6 +5,12 @@ $(function() {
     tinymce.init({
         selector: "textarea",
         statusbar: false,
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table contextmenu paste code'
+        ],
+        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignbright alignjustify | bullist numlist outdent indent | link image',
         setup: function (editor) {
             editor.on('change', function () {
                 editor.save();
@@ -22,7 +28,6 @@ $(function() {
         $(this).parent().parent().hide("slow");
         return false;
     });
-
 
     // Stop propagation and default behaviour on form submit
     $("#comment-form").submit(function(e) {

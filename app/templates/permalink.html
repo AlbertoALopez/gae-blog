@@ -42,7 +42,7 @@
                     <input id="post-id" type="hidden" name="post-id" value="{{ post.key.id() }}">
                 </div>
                 <div id="post-form-textarea" class="form-group">
-                    <textarea id="post-body" name="post-body" class="form-control" rows="3">{{ post.post_body }}</textarea>
+                    <textarea id="post-body" name="post-body" class="form-control" rows="3">{{ post.post_body | safe }}</textarea>
                     <label id="post-body-error" style="display:none;" class="control-label" for="comment">Please enter a post body.</label>
                 </div>
                 <input id="submit-edit-btn" value="Submit" type="submit" name="edit-post" class="btn btn-primary">
