@@ -57,7 +57,7 @@ $(function() {
             likeAmount++;
         }
 
-        likeHtml = likeAmount + " <span class='glyphicon glyphicon-heart'></span>";
+        likesHtml = likeAmount + " <span class='glyphicon glyphicon-heart'></span>";
 
         // Disable like button so user cannot like more than once
         $(this).prop("disabled", true);
