@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8" />
+    <title>404 error</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <style>
+    body {
+        padding-top: 100px;
+    }
+    .logo h1 {
+        color: #000000;
+        font-size: 80px;
+        padding-bottom:40px;
+    }
+    .text-muted {
+        color:#000000;
+        font-size:25px;
+    }
+    @media (max-width: 767px){
+        .logo h1 {
+            font-size: 65px;
+        }
+    }
+    </style>
+</head>
+    <body>
+        <div class="container">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <div class="logo">
+                    <h1>Oops, Error
+                        {% if error %}
+                            {{ error }}
+                        {% endif %} !</h1>
+                </div>
+                <div class="clearfix"></div>
+            <div class="col-lg-8  col-lg-offset-2">
+                <div class="input-group">
+                <input type="text" placeholder="Write Your Message" class="form-control" />
+                <span class="input-group-btn">
+                    <button class="btn btn-danger" type="button">Contact Support</button>
+                </span>
+                </div>
+            </div>
+                <div class="clearfix"></div>
+                <br /><br />
+                <p class="text-muted">There was an error, please try again later. </p>
+                <div class="clearfix"></div>
+                <br /><br />
+            </div>
+        </div>
+    </body>
+</html>

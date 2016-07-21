@@ -22,9 +22,17 @@ class NewPost(Handler):
                     user=user)
 
     def get(self):
+        """Handler for GET requests."""
         self.render_page()
 
     def post(self):
+        """Handler for POST requests."""
+        # If a request maker is not a valid user, throw unauthorized error
+        if not self.user:
+            self.error(401)
+            self.render('error.html', error=401)
+            return
+
         post_title = self.request.get("post-title")
         post_body = self.request.get("post-body")
         post_submitter = self.request.get("post-submitter")
@@ -43,7 +51,9 @@ class NewPost(Handler):
 
         else:
             # Bootstrap alert error
-            error_message = """<div class="alert alert-danger" role="alert" class="error-message">Please enter a post title and a post body.</div>"""
+            error_message = """<div class="alert alert-danger"
+                role="alert" class="error-message">Please enter a post title
+                and a post body.</div>"""
             self.render_page(error_message=error_message,
                              post_title=post_title, post_body=post_body)
 
@@ -53,12 +63,18 @@ class LikePost(Handler):
 
     def put(self):
         """Handler for PUT requests."""
+        # If a valid user did not make request, throw unauthorized error
+        if not self.user:
+            self.error(401)
+            self.render('error.html', error=401)
+            return
+
         post_id = self.request.get("post-id")
         post_liker = int(self.request.get("post-liker"))
         post = Posts.return_post(post_id)
 
         # If post exists, increment and return
-        if post:
+        if post and self.user.name != post.post_submitter:
             if post.post_likes is None:
                 post.post_likes = 1
 
@@ -77,46 +93,71 @@ class LikePost(Handler):
 
         else:
             self.error(500)
+            self.render('error.html', error=500)
 
 
 class EditPost(Handler):
     """Handler for general post edits."""
 
     def get(self, post_id):
+        if not self.user:
+            self.error(401)
+            self.render('error.html', error=401)
+            return
+
         postkey = ndb.Key('Posts', int(post_id), parent=blog_key())
         post = postkey.get()
         user = None
 
-        if self.user:
+        # Check if request is authorized
+        if self.user.name == post.post_submitter:
             user = self.user
+        else:
+            self.error(401)
+            self.render('error.html', error=401)
+            return
+
+        # If post does not exist
         if not post:
             self.error(404)
+            self.render('error.html', error=404)
             return
 
         self.render("editpost.html", post=post, user=user)
 
-    def put(self):
+    def put(self, user):
         """Handler for PUT requests."""
+        if not self.user:
+            self.error(401)
+            self.render('error.html', error=401)
+            return
+
         post_id = self.request.get("post-id")
         post_body = self.request.get("post-body")
         post = Posts.return_post(post_id)
 
-        if post:
+        if post and self.user.name == post.post_submitter:
             post.post_body = post_body
             post.put()
 
         else:
             self.error(500)
+            self.render('error.html', error=500)
 
-    def post(self):
+    def post(self, user):
         """Handler for POST requests."""
+        if not self.user:
+            self.error(401)
+            self.render('error.html', error=401)
+            return
+
         post_id = self.request.get("post-id")
         post_title = bleach.clean(self.request.get("post-title"), strip=True)
         post_body = self.request.get("post-body")
         post_category = self.request.get("post-category")
         post = Posts.return_post(post_id)
 
-        if post:
+        if post and self.user.name == post.post_submitter:
             post.populate(
                 post_title=post_title,
                 post_body=post_body,
@@ -127,6 +168,7 @@ class EditPost(Handler):
 
         else:
             self.error(500)
+            self.render('error.html', error=500)
 
 
 class DeletePost(Handler):
@@ -134,11 +176,17 @@ class DeletePost(Handler):
 
     def put(self):
         """Handler for PUT requests."""
+        if not self.user:
+            self.error(401)
+            self.render('error.html', error=401)
+            return
         post_id = self.request.get("post-id")
         post_key = ndb.Key('blogs', 'default', 'Posts', int(post_id))
+        post = post_key.get()
 
-        if post_key:
+        if post_key and self.user.name == post.post_submitter:
             post_key.delete()
 
         else:
             self.error(500)
+            self.render('error.html', error=500)
