@@ -2,22 +2,28 @@
 
 A multi user blog with user accounts, implemented on Google App Engine.
 
+Example running at `http://first-strength-135202.appspot.com/`.
+
 ## Features
 
 * Uses webapp2 framework for backend, Bootstrap 3 for frontend
 * Templating system with Jinja2
 * Google datastore to persist user accounts and posts
 * Client and server side authentication
+* HTTP error templating
 
 ## Installation
 
-First make sure you have a version of Python 2.7, as well as the latest google app engine python toolkit installed and available on your machines $PATH.
+You must have a version of Python 2.7, as well as the latest Google App Engine Python toolkit installed and available on your machines $PATH.
 
 `git clone` and navigate to main directory
 
-`dev_appserver.py .` to start develeopment server
+In order to properly hash passwords and run the application add your own secret in `app/views/utilities/secret.py`.
 
-To deploy the app, as per the Google App Engine documentation: `appcfg.py -A [YOUR_PROJECT_ID] -V v1 update ./`
+`dev_appserver.py .` to start development server.
+
+
+To deploy the blog, as per the Google App Engine documentation: `appcfg.py -A [YOUR_PROJECT_ID] -V v1 update ./`
 Your project will be running live at `http://[YOUR_PROJECT_ID].appspot.com/`.
 
 ## TODO
