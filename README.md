@@ -2,7 +2,7 @@
 
 A multi user blog with user accounts, implemented on Google App Engine.
 
-Example running at `http://first-strength-135202.appspot.com/`.
+Example running at <a href="example.com" target="_blank">http://first-strength-135202.appspot.com/</a>h.
 
 ## Features
 
