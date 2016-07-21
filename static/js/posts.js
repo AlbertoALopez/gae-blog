@@ -47,8 +47,8 @@ $(function() {
         var postId = $(this).data('value');
         var likeAmount = $(this).data('likes');
         var postLiker = $(this).data('user');
-        var postHtml = likeAmount + " <span class='glyphicon glyphicon-heart'></span>";
-        var prev = $(this).prev().find(".number-of-likes");
+        var likesHtml = "";
+        var likeAmountElement = $(this).prev().find(".number-of-likes");
 
         if (likeAmount === "None") {
             likeAmount = 1 ;
@@ -56,6 +56,8 @@ $(function() {
         else {
             likeAmount++;
         }
+
+        likeHtml = likeAmount + " <span class='glyphicon glyphicon-heart'></span>";
 
         // Disable like button so user cannot like more than once
         $(this).prop("disabled", true);
@@ -69,7 +71,7 @@ $(function() {
             },
             cache: false,
             success: function(response) {
-                prev.html(postHtml);
+                likeAmountElement.html(likesHtml);
             }
         });
 

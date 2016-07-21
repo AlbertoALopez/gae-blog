@@ -111,11 +111,10 @@ $(function() {
 
     // AJAX handler to update comment likes
     $(".like-comment-btn").click(function(event) {
-        event.stopPropagation();
         var commentId = $(this).data('value');
         var likeAmount = $(this).data('likes');
         var commentLiker = $(this).data('user');
-        var commentHtml = likeAmount + " <span class='glyphicon glyphicon-heart'></span>";
+        var commentHtml = "";
         var likeBoxHtml = $(this).prev().find(".number-of-likes");
 
         // If there are no likes yet, set to 1
@@ -125,6 +124,8 @@ $(function() {
         else {
             likeAmount++;
         }
+
+        commentHtml = likeAmount + " <span class='glyphicon glyphicon-heart'></span>";
 
         // Disable like button so user cannot like more than once
         $(this).prop("disabled", true);
@@ -142,6 +143,7 @@ $(function() {
             }
         });
 
+        return false;
     }); // End PUT for likes
 
 
