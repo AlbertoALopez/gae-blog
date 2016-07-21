@@ -1,6 +1,6 @@
-{% extends "base.html" %} {% block scripthead %}
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script>src="/static/js/tinymce.js"></script>
+{% extends "base.html" %}
+{% block scripthead %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.4.0/tinymce.min.js"></script>
 {% endblock %} {% block content %}
     <form action="/blog/editpost" method="post" enctype="multipart/form-data">
         <div class="form-group">
@@ -20,7 +20,7 @@
                 <option value='Hockey'>Hockey</option>
             </select>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="title">Post Status</label>
             <br>
             <select name="post-status" id="">
@@ -35,7 +35,7 @@
         <div class="form-group">
             <label for="post_tags">Post Tags</label>
             <input type="text" class="form-control" name="post-tags">
-        </div>
+        </div> -->
         <div class="form-group">
             <label for="post_content">Post Content</label>
             <textarea class="form-control " name="post-body" id="" cols="30" rows="10">{{post.post_body}}</textarea>
@@ -44,4 +44,7 @@
             <input class="btn btn-primary" type="submit" name="create-post" value="Publish Post">
         </div>
     </form>
+{% endblock %}
+{% block javascript %}
+    <script src="/static/js/tinymce.js"></script>
 {% endblock %}
