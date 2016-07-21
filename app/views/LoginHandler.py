@@ -14,7 +14,7 @@ class LoginHandler(Handler):
             self.redirect('/blog/welcome')
         else:
             error_message = "User does not exist. Please signup."
-            self.render("login.html", error_message=error_message)
+            self.render("signup.html", error_message=error_message)
 
     def get(self):
         if self.user:
