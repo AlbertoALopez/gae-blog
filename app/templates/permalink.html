@@ -43,8 +43,7 @@
                 </div>
                 <div class="form-group">
                     <label for="title">Post Title</label>
-                    <input type="text" class="form-control" name="post-title" value="{{post.post_title}}">
-                    <input type="hidden" class="form-control" name="post-id" value="{{post.key.id()}}">
+                    <input id="post-title" type="text" class="form-control" name="post-title" value="{{post.post_title}}">
                 </div>
                 <div id="post-form-textarea" class="form-group">
                     <textarea id="post-body" name="post-body" class="form-control" rows="3">{{ post.post_body | safe }}</textarea>

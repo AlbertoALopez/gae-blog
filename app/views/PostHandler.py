@@ -100,6 +100,7 @@ class EditPost(Handler):
     """Handler for general post edits."""
 
     def get(self, post_id):
+        """Handler for GET requests."""
         if not self.user:
             self.error(401)
             self.render('error.html', error=401)
@@ -125,7 +126,7 @@ class EditPost(Handler):
 
         self.render("editpost.html", post=post, user=user)
 
-    def put(self, user):
+    def put(self):
         """Handler for PUT requests."""
         if not self.user:
             self.error(401)
@@ -133,10 +134,12 @@ class EditPost(Handler):
             return
 
         post_id = self.request.get("post-id")
+        post_title = self.request.get("post-title")
         post_body = self.request.get("post-body")
         post = Posts.return_post(post_id)
 
         if post and self.user.name == post.post_submitter:
+            post.post_title = post_title
             post.post_body = post_body
             post.put()
 
@@ -144,7 +147,7 @@ class EditPost(Handler):
             self.error(500)
             self.render('error.html', error=500)
 
-    def post(self, user):
+    def post(self):
         """Handler for POST requests."""
         if not self.user:
             self.error(401)

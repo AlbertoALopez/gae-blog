@@ -18,7 +18,9 @@ $(function() {
     // AJAX handler for post edits
     $("#submit-edit-btn").click(function() {
         var postId = $("#post-id").val();
-        var postEditBody = $("textarea#post-body").val();
+        var postNewTitle = $("#post-title").val();
+        var postNewBody = $("textarea#post-body").val();
+        var postOriginalTitle = $(".blog-post-title");
         var postOriginalBody = $("#post-body");
 
         $.ajax({
@@ -26,11 +28,13 @@ $(function() {
             url: "/blog/editpost",
             data: {
                 'post-id': postId,
-                'post-body': postEditBody
+                'post-title': postNewTitle,
+                'post-body': postNewBody
             },
             cache: false,
             success: function() {
-                postOriginalBody.html(postEditBody);
+                postOriginalTitle.html(postNewTitle);
+                postOriginalBody.html(postNewBody);
                 $(".post-edit-box").hide("slow");
             }
         });
