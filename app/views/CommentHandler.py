@@ -7,10 +7,14 @@ import json
 
 
 class NewComment(Handler):
-    """Handler for new comment."""
+    """Handler for new comments."""
 
     def post(self):
         """Handle POST requests."""
+        if not self.user:
+            self.throw_error(401)
+            return
+
         parent = int(self.request.get("parent"))
         comment_submitter = self.request.get("comment-submitter")
         comment_body = self.request.get("comment-body")
@@ -40,6 +44,10 @@ class LikeComment(Handler):
 
     def put(self):
         """Handle PUT requests."""
+        if not self.user:
+            self.throw_error(401)
+            return
+
         comment_id = self.request.get("comment-id")
         comment_liker = int(self.request.get("comment-liker"))
         comment = Comments.return_comment(comment_id)
@@ -64,7 +72,7 @@ class LikeComment(Handler):
 
         # Else render HTTP error message
         else:
-            self.error(500)
+            self.throw_error(500)
 
 
 class EditComment(Handler):
@@ -72,16 +80,20 @@ class EditComment(Handler):
 
     def put(self):
         """Handle PUT requests."""
+        if not self.user:
+            self.throw_error(401)
+            return
+
         comment_id = self.request.get("comment-id")
         comment_body = self.request.get("comment-body")
         comment = Comments.return_comment(comment_id)
 
-        if comment:
+        if comment and self.user.name == comment.comment_submitter:
             comment.comment_body = comment_body
             comment.put()
 
         else:
-            self.error(500)
+            self.throw_error(500)
 
 
 class DeleteComment(Handler):
@@ -89,11 +101,16 @@ class DeleteComment(Handler):
 
     def put(self):
         """Handle PUT requests."""
+        if not self.user:
+            self.throw_error(401)
+            return
+
         comment_id = self.request.get("comment-id")
         comment_key = ndb.Key('Comments', int(comment_id))
+        comment = comment_key.get()
 
-        if comment_key:
+        if comment and self.user.name == comment.comment_submitter:
             comment_key.delete()
 
         else:
-            self.error(500)
+            self.throw_error(500)

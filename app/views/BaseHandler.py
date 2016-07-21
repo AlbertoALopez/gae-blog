@@ -54,5 +54,6 @@ class Handler(webapp2.RequestHandler):
         self.user = uid and User.get_user_by_id(int(uid))
 
     def throw_error(self, error_code):
+        """Throws given error code with a custome error template page."""
         self.error(error_code)
         self.render('error.html', error=error_code)
