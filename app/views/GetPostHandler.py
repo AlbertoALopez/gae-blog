@@ -16,7 +16,7 @@ class GetPost(Handler):
         if self.user:
             user = self.user
         if not post:
-            self.error(404)
+            self.throw_error(404)
             return
 
         self.render("permalink.html", post=post, user=user, comments=comments)
